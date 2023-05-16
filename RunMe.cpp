@@ -1,14 +1,18 @@
 #include "RunMe.h"
 
-int main(int argc, char* argv[])
+int main()
 {
     System airports;
     int choice;
-    choice = getChoice();
 
+    vector<string> paths;
+    // paths.reserve(10);
+    // airports.getAllPaths(paths);
+
+    choice = getChoice();
     while (choice != 7) 
     {
-        executeChoice(choice);
+        executeChoice(choice,airports, paths);
         choice = getChoice();
     }
 
@@ -34,6 +38,8 @@ int getChoice()
     bool flag = true;
     printMenu();
     cin >> choice;
+    cin.ignore(); // Ignore any leftover newline characters from previous input
+    
     while(flag)
     {
         if(choice > 0 && choice < 8)
@@ -43,17 +49,18 @@ int getChoice()
             cout << "Wrong choice, please choose again!" << endl;
             printMenu();
             cin >> choice;
+            cin.ignore(); // Ignore any leftover newline characters from previous input
         }
     }
 }
 
-void executeChoice(int choice)
+void executeChoice(int choice,System& airports, vector<string> paths)
 {
     switch(choice)
     {
-        case 1: printAirportsArv();
+        case 1: printAirportsArv(airports, paths);
         break;
-        case 2:
+        case 2: printAirportSchedule(airports, paths);
         break;
         case 3:
         break;
@@ -69,7 +76,29 @@ void executeChoice(int choice)
 }
 
 
-void printAirportsArv()
+void printAirportsArv(System& airports, vector<string> paths)
+{
+    vector<string> airportsCodeNames;
+    getInputFromUser(airportsCodeNames, "Insert airports ICOA code names to print arrivals:");
+
+
+
+}
+
+//take sentence from user for example "this is a seneteence" break it down into array of words that combine the sentence - "this", "is" "a" "sentence"
+void getInputFromUser(vector<string>& words, string message)
+{
+    cout << message << endl;
+    string line;
+    getline(cin, line);
+
+    istringstream iss(line);
+    string code;
+    while (iss >> code)
+        words.push_back(code);
+}
+
+void printAirportSchedule(System& airports, vector<string> paths)
 {
 
 }

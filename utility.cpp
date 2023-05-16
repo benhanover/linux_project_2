@@ -4,15 +4,14 @@
 
 //----------------------------------------Main Functions-----------------------------------------
 
-void System::deleteAll()
-{
-    for (auto& airport : airportsVector)
-    {
-        delete airport;
-
-    }
-    airportsVector.clear();
-}
+// void System::deleteAll()
+// {
+//     for (auto& airport : airportsVector)
+//     {
+//         delete airport;
+//     }
+//     airportsVector.clear();
+// }
 
 int System::getAirportIndexByName(string& airportName)
 {

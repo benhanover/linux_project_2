@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <string>
@@ -26,12 +27,19 @@ public:
     {
        deleteAll(); 
     }    
-    void deleteAll();
     void addAirport(SingleAirport* airport)
     {
         airportsVector.push_back(airport);
     }
 
+    void deleteAll()
+    {
+        for (auto &airport : airportsVector)
+        {
+            delete airport;
+        }
+        airportsVector.clear();
+    }
     vector<SingleAirport *> getAirportsVector() const { return airportsVector; }
     void getAllAirportsNames(vector<string> &airportNames);
     vector<FlightInfo *> getFlightsByCallsign(string &callsign);
