@@ -1,22 +1,14 @@
-#include  "utility.h"
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void printMenu();
-int getChoice();
-void executeChoice(int choice);
-bool fineChoice(int n);
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "RunMe.h"
 
 int main(int argc, char* argv[])
 {
+    System airports;
     int choice;
     choice = getChoice();
 
     while (choice != 7) 
     {
-        // executeChoice(choice);
+        executeChoice(choice);
         choice = getChoice();
     }
 
@@ -59,7 +51,7 @@ void executeChoice(int choice)
 {
     switch(choice)
     {
-        case 1:
+        case 1: printAirportsArv();
         break;
         case 2:
         break;
@@ -76,3 +68,8 @@ void executeChoice(int choice)
     }
 }
 
+
+void printAirportsArv()
+{
+
+}
