@@ -8,6 +8,7 @@ int main()
     vector<string> paths;
     paths.reserve(10);
     airports.getAllPaths(paths);
+    airports.load_db(paths);
 
     choice = getChoice();
     while (choice != 7) 

@@ -183,10 +183,9 @@ void SingleAirport::updateAirportDataFlights(string& path)
 
 void System::getAllPaths(vector<string>& paths)
 {
-    fs::path currentPath = fs::current_path();
-    string path = currentPath;
+    fs::path parentPath = fs::current_path().parent_path();
     
-    for (const auto& entry : fs::recursive_directory_iterator(path))
+    for (const auto& entry : fs::recursive_directory_iterator(parentPath))
     {
         if (fs::is_directory(entry.path()))
         {   // Skip directories
@@ -224,39 +223,22 @@ void System::getAllAirportsNames(vector<string>& airportsNamesVector) {
 }
 
 
-bool System::checkIfAllInDB(vector<string>& paths, vector<string>& missing_names, int numOfCodesRecieved, char** codesRecievedArr)
+// bool System::checkIfAllInDB(vector<string>& paths, vector<string>& missing_names, int numOfCodesRecieved, vector<string> codesRecievedArr)
+// {
+bool System::checkIfAllInDbAndUpdateMissing(vector<string> &missing_names, vector<string> codesRecievedArr)
 {
-    int pathsIndex,namesIndex,numberOfAirports;
-    vector<string> airportsNamesVector;
-    
-    numberOfAirports = paths.size() / 2;
-    pathsIndex = 0;
-
-    for (int namesIndex = 0; namesIndex < numberOfAirports ; namesIndex++)
+    bool flag = true;
+    for (auto& codeRecived: codesRecievedArr)
     {
-        string curName = getAirportNameFromPath(paths[pathsIndex]);
-        airportsNamesVector.push_back(curName); 
-        pathsIndex += 2; //different name every 2 paths (1 for arv file and 1 for dpt file - always adjacent)
-
+        if (!isAirportExist(codeRecived))
+        {
+           flag = false;
+           missing_names.push_back(codeRecived);
+        }
     }
-
-    // Iterate over the array of arguments recieved.
-    for (int i = 1; i < numOfCodesRecieved; i++)
-    {
-        string codeString = codesRecievedArr[i];
-        // Check if the current code (argument) is in the vector.
-        if (find(airportsNamesVector.begin(), airportsNamesVector.end(), codeString) == airportsNamesVector.end())
-            missing_names.push_back(codeString);
-            // The current name is not in the vector.
-
-    }
-
-    if (missing_names.empty())
-        return true; //no missing names, all arguments in DB
-    else 
-        return false;
-
+    return flag;
 }
+
 
 bool System::isAircraftInDB(string code)
 {
@@ -272,5 +254,12 @@ bool System::isAircraftInDB(string code)
                 return true;
     }
 
+    return false;
+}
+bool System::isAirportExist(string airportName)
+{
+    for (auto& airport: airportsVector)
+        if (airport->getIcaoCode() == airportName)
+            return true;
     return false;
 }
