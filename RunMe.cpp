@@ -6,8 +6,8 @@ int main()
     int choice;
 
     vector<string> paths;
-    // paths.reserve(10);
-    // airports.getAllPaths(paths);
+    paths.reserve(10);
+    airports.getAllPaths(paths);
 
     choice = getChoice();
     while (choice != 7) 
