@@ -12,7 +12,6 @@ namespace fs = std::filesystem;
 
 class SingleAirport;
 class FlightInfo;
-
 class System
 {
     vector<SingleAirport*> airportsVector;
