@@ -24,7 +24,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 20,
+				"line" : 14,
 				"parent" : 0
 			}
 		]
@@ -54,7 +54,9 @@
 			[
 				0,
 				1,
-				2
+				2,
+				3,
+				4
 			]
 		}
 	],
@@ -89,7 +91,9 @@
 			[
 				0,
 				1,
-				2
+				2,
+				3,
+				4
 			]
 		}
 	],
@@ -104,6 +108,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "utilities/utility.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "missions/functions.cpp",
 			"sourceGroupIndex" : 0
 		},
@@ -111,6 +121,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "missions/mission1.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "missions/mission2.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

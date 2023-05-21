@@ -202,6 +202,54 @@ missions/mission1.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission1.cpp.s
 .PHONY : missions/mission1.cpp.s
 
+missions/mission2.o: missions/mission2.cpp.o
+.PHONY : missions/mission2.o
+
+# target to build an object file
+missions/mission2.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission2.cpp.o
+.PHONY : missions/mission2.cpp.o
+
+missions/mission2.i: missions/mission2.cpp.i
+.PHONY : missions/mission2.i
+
+# target to preprocess a source file
+missions/mission2.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission2.cpp.i
+.PHONY : missions/mission2.cpp.i
+
+missions/mission2.s: missions/mission2.cpp.s
+.PHONY : missions/mission2.s
+
+# target to generate assembly for a file
+missions/mission2.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission2.cpp.s
+.PHONY : missions/mission2.cpp.s
+
+utilities/utility.o: utilities/utility.cpp.o
+.PHONY : utilities/utility.o
+
+# target to build an object file
+utilities/utility.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/utilities/utility.cpp.o
+.PHONY : utilities/utility.cpp.o
+
+utilities/utility.i: utilities/utility.cpp.i
+.PHONY : utilities/utility.i
+
+# target to preprocess a source file
+utilities/utility.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/utilities/utility.cpp.i
+.PHONY : utilities/utility.cpp.i
+
+utilities/utility.s: utilities/utility.cpp.s
+.PHONY : utilities/utility.s
+
+# target to generate assembly for a file
+utilities/utility.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/utilities/utility.cpp.s
+.PHONY : utilities/utility.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -220,6 +268,12 @@ help:
 	@echo "... missions/mission1.o"
 	@echo "... missions/mission1.i"
 	@echo "... missions/mission1.s"
+	@echo "... missions/mission2.o"
+	@echo "... missions/mission2.i"
+	@echo "... missions/mission2.s"
+	@echo "... utilities/utility.o"
+	@echo "... utilities/utility.i"
+	@echo "... utilities/utility.s"
 .PHONY : help
 
 

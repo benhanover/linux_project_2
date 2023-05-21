@@ -2,7 +2,7 @@ CMakeFiles/runMe.dir/missions/functions.cpp.o: \
  /home/benos/Desktop/linux_project_2/missions/functions.cpp \
  /usr/include/stdc-predef.h \
  /home/benos/Desktop/linux_project_2/missions/./missions.h \
- /home/benos/Desktop/linux_project_2/missions/./../utility.h \
+ /home/benos/Desktop/linux_project_2/missions/./../utilities/utility.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
