@@ -33,7 +33,7 @@ void printMenu()
 
 int getChoice()
 {
-    int choice;
+    char choice;
     bool flag = true;
     printMenu();
     cin >> choice;
@@ -41,8 +41,8 @@ int getChoice()
     
     while(flag)
     {
-        if(choice > 0 && choice < 8)
-            return choice;
+        if(choice > '0' && choice < '8')
+            return choice - '0';
         else
         {
             cout << "Wrong choice, please choose again!" << endl;
@@ -75,29 +75,3 @@ void executeChoice(int choice,System& airports, vector<string> paths)
 }
 
 
-void printAirportsArv(System& airports, vector<string> paths)
-{
-    vector<string> airportsCodeNames;
-    getInputFromUser(airportsCodeNames, "Insert airports ICOA code names to print arrivals:");
-
-
-
-}
-
-//take sentence from user for example "this is a seneteence" break it down into array of words that combine the sentence - "this", "is" "a" "sentence"
-void getInputFromUser(vector<string>& words, string message)
-{
-    cout << message << endl;
-    string line;
-    getline(cin, line);
-
-    istringstream iss(line);
-    string code;
-    while (iss >> code)
-        words.push_back(code);
-}
-
-void printAirportSchedule(System& airports, vector<string> paths)
-{
-
-}
