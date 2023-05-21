@@ -1,1 +1,1 @@
-/usr/bin/g++ -g CMakeFiles/runMe.dir/RunMe.cpp.o CMakeFiles/runMe.dir/utility.cpp.o -o runMe 
+/usr/bin/g++ -g CMakeFiles/runMe.dir/RunMe.cpp.o CMakeFiles/runMe.dir/missions/functions.cpp.o CMakeFiles/runMe.dir/missions/mission1.cpp.o -o runMe 

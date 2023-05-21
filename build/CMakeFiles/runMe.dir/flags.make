@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/g++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/benos/Desktop/linux_project_2/include -I/home/benos/Desktop/linux_project_2/My_lib/include
+CXX_INCLUDES = 
 
 CXX_FLAGS = -g -std=gnu++20
 

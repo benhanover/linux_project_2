@@ -12,3 +12,14 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
   file(TOUCH_NOCREATE "/home/benos/Desktop/linux_project_2/build/CMakeFiles/cmake.verify_globs")
 endif()
+
+# SRC_FILES at CMakeLists.txt:17 (file)
+file(GLOB NEW_GLOB LIST_DIRECTORIES true "/home/benos/Desktop/linux_project_2/./missions/*.cpp")
+set(OLD_GLOB
+  "/home/benos/Desktop/linux_project_2/./missions/functions.cpp"
+  "/home/benos/Desktop/linux_project_2/./missions/mission1.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "/home/benos/Desktop/linux_project_2/build/CMakeFiles/cmake.verify_globs")
+endif()

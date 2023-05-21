@@ -1,12 +1,17 @@
 [
 {
   "directory": "/home/benos/Desktop/linux_project_2/build",
-  "command": "/usr/bin/g++  -I/home/benos/Desktop/linux_project_2/include -I/home/benos/Desktop/linux_project_2/My_lib/include -g -std=gnu++20 -o CMakeFiles/runMe.dir/RunMe.cpp.o -c /home/benos/Desktop/linux_project_2/RunMe.cpp",
+  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/RunMe.cpp.o -c /home/benos/Desktop/linux_project_2/RunMe.cpp",
   "file": "/home/benos/Desktop/linux_project_2/RunMe.cpp"
 },
 {
   "directory": "/home/benos/Desktop/linux_project_2/build",
-  "command": "/usr/bin/g++  -I/home/benos/Desktop/linux_project_2/include -I/home/benos/Desktop/linux_project_2/My_lib/include -g -std=gnu++20 -o CMakeFiles/runMe.dir/utility.cpp.o -c /home/benos/Desktop/linux_project_2/utility.cpp",
-  "file": "/home/benos/Desktop/linux_project_2/utility.cpp"
+  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/missions/functions.cpp.o -c /home/benos/Desktop/linux_project_2/missions/functions.cpp",
+  "file": "/home/benos/Desktop/linux_project_2/missions/functions.cpp"
+},
+{
+  "directory": "/home/benos/Desktop/linux_project_2/build",
+  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/missions/mission1.cpp.o -c /home/benos/Desktop/linux_project_2/missions/mission1.cpp",
+  "file": "/home/benos/Desktop/linux_project_2/missions/mission1.cpp"
 }
 ]

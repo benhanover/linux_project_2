@@ -83,33 +83,49 @@ CMakeFiles/runMe.dir/RunMe.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/runMe.dir/RunMe.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/benos/Desktop/linux_project_2/RunMe.cpp -o CMakeFiles/runMe.dir/RunMe.cpp.s
 
-CMakeFiles/runMe.dir/utility.cpp.o: CMakeFiles/runMe.dir/flags.make
-CMakeFiles/runMe.dir/utility.cpp.o: ../utility.cpp
-CMakeFiles/runMe.dir/utility.cpp.o: CMakeFiles/runMe.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/benos/Desktop/linux_project_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/runMe.dir/utility.cpp.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/runMe.dir/utility.cpp.o -MF CMakeFiles/runMe.dir/utility.cpp.o.d -o CMakeFiles/runMe.dir/utility.cpp.o -c /home/benos/Desktop/linux_project_2/utility.cpp
+CMakeFiles/runMe.dir/missions/functions.cpp.o: CMakeFiles/runMe.dir/flags.make
+CMakeFiles/runMe.dir/missions/functions.cpp.o: ../missions/functions.cpp
+CMakeFiles/runMe.dir/missions/functions.cpp.o: CMakeFiles/runMe.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/benos/Desktop/linux_project_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/runMe.dir/missions/functions.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/runMe.dir/missions/functions.cpp.o -MF CMakeFiles/runMe.dir/missions/functions.cpp.o.d -o CMakeFiles/runMe.dir/missions/functions.cpp.o -c /home/benos/Desktop/linux_project_2/missions/functions.cpp
 
-CMakeFiles/runMe.dir/utility.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/runMe.dir/utility.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/benos/Desktop/linux_project_2/utility.cpp > CMakeFiles/runMe.dir/utility.cpp.i
+CMakeFiles/runMe.dir/missions/functions.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/runMe.dir/missions/functions.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/benos/Desktop/linux_project_2/missions/functions.cpp > CMakeFiles/runMe.dir/missions/functions.cpp.i
 
-CMakeFiles/runMe.dir/utility.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/runMe.dir/utility.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/benos/Desktop/linux_project_2/utility.cpp -o CMakeFiles/runMe.dir/utility.cpp.s
+CMakeFiles/runMe.dir/missions/functions.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/runMe.dir/missions/functions.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/benos/Desktop/linux_project_2/missions/functions.cpp -o CMakeFiles/runMe.dir/missions/functions.cpp.s
+
+CMakeFiles/runMe.dir/missions/mission1.cpp.o: CMakeFiles/runMe.dir/flags.make
+CMakeFiles/runMe.dir/missions/mission1.cpp.o: ../missions/mission1.cpp
+CMakeFiles/runMe.dir/missions/mission1.cpp.o: CMakeFiles/runMe.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/benos/Desktop/linux_project_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/runMe.dir/missions/mission1.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/runMe.dir/missions/mission1.cpp.o -MF CMakeFiles/runMe.dir/missions/mission1.cpp.o.d -o CMakeFiles/runMe.dir/missions/mission1.cpp.o -c /home/benos/Desktop/linux_project_2/missions/mission1.cpp
+
+CMakeFiles/runMe.dir/missions/mission1.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/runMe.dir/missions/mission1.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/benos/Desktop/linux_project_2/missions/mission1.cpp > CMakeFiles/runMe.dir/missions/mission1.cpp.i
+
+CMakeFiles/runMe.dir/missions/mission1.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/runMe.dir/missions/mission1.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/benos/Desktop/linux_project_2/missions/mission1.cpp -o CMakeFiles/runMe.dir/missions/mission1.cpp.s
 
 # Object files for target runMe
 runMe_OBJECTS = \
 "CMakeFiles/runMe.dir/RunMe.cpp.o" \
-"CMakeFiles/runMe.dir/utility.cpp.o"
+"CMakeFiles/runMe.dir/missions/functions.cpp.o" \
+"CMakeFiles/runMe.dir/missions/mission1.cpp.o"
 
 # External object files for target runMe
 runMe_EXTERNAL_OBJECTS =
 
 runMe: CMakeFiles/runMe.dir/RunMe.cpp.o
-runMe: CMakeFiles/runMe.dir/utility.cpp.o
+runMe: CMakeFiles/runMe.dir/missions/functions.cpp.o
+runMe: CMakeFiles/runMe.dir/missions/mission1.cpp.o
 runMe: CMakeFiles/runMe.dir/build.make
 runMe: CMakeFiles/runMe.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/benos/Desktop/linux_project_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable runMe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/benos/Desktop/linux_project_2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable runMe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/runMe.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

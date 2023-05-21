@@ -154,29 +154,53 @@ RunMe.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/RunMe.cpp.s
 .PHONY : RunMe.cpp.s
 
-utility.o: utility.cpp.o
-.PHONY : utility.o
+missions/functions.o: missions/functions.cpp.o
+.PHONY : missions/functions.o
 
 # target to build an object file
-utility.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/utility.cpp.o
-.PHONY : utility.cpp.o
+missions/functions.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/functions.cpp.o
+.PHONY : missions/functions.cpp.o
 
-utility.i: utility.cpp.i
-.PHONY : utility.i
+missions/functions.i: missions/functions.cpp.i
+.PHONY : missions/functions.i
 
 # target to preprocess a source file
-utility.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/utility.cpp.i
-.PHONY : utility.cpp.i
+missions/functions.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/functions.cpp.i
+.PHONY : missions/functions.cpp.i
 
-utility.s: utility.cpp.s
-.PHONY : utility.s
+missions/functions.s: missions/functions.cpp.s
+.PHONY : missions/functions.s
 
 # target to generate assembly for a file
-utility.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/utility.cpp.s
-.PHONY : utility.cpp.s
+missions/functions.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/functions.cpp.s
+.PHONY : missions/functions.cpp.s
+
+missions/mission1.o: missions/mission1.cpp.o
+.PHONY : missions/mission1.o
+
+# target to build an object file
+missions/mission1.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission1.cpp.o
+.PHONY : missions/mission1.cpp.o
+
+missions/mission1.i: missions/mission1.cpp.i
+.PHONY : missions/mission1.i
+
+# target to preprocess a source file
+missions/mission1.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission1.cpp.i
+.PHONY : missions/mission1.cpp.i
+
+missions/mission1.s: missions/mission1.cpp.s
+.PHONY : missions/mission1.s
+
+# target to generate assembly for a file
+missions/mission1.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission1.cpp.s
+.PHONY : missions/mission1.cpp.s
 
 # Help Target
 help:
@@ -190,9 +214,12 @@ help:
 	@echo "... RunMe.o"
 	@echo "... RunMe.i"
 	@echo "... RunMe.s"
-	@echo "... utility.o"
-	@echo "... utility.i"
-	@echo "... utility.s"
+	@echo "... missions/functions.o"
+	@echo "... missions/functions.i"
+	@echo "... missions/functions.s"
+	@echo "... missions/mission1.o"
+	@echo "... missions/mission1.i"
+	@echo "... missions/mission1.s"
 .PHONY : help
 
 
