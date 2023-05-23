@@ -34,6 +34,7 @@ void notAllInDB(vector<string>& missing_names, System& airports)
 
     if (option == 2)
         return;
+    // real names /  not real names
 
     string projectPath = fs::current_path().parent_path();
     string airportNames = "";

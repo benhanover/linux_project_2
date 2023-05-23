@@ -223,8 +223,6 @@ void System::getAllAirportsNames(vector<string>& airportsNamesVector) {
 }
 
 
-// bool System::checkIfAllInDB(vector<string>& paths, vector<string>& missing_names, int numOfCodesRecieved, vector<string> codesRecievedArr)
-// {
 bool System::checkIfAllInDbAndUpdateMissing(vector<string> &missing_names, vector<string> codesRecievedArr)
 {
     bool flag = true;

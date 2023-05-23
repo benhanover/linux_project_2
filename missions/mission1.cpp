@@ -34,12 +34,13 @@ void printSingleAirportArv(System& airports,string& IcoaCode)
     {
         int airportIndex = airports.getAirportIndexByName(IcoaCode);
         vector<SingleAirport*> airportsVector = airports.getAirportsVector();
+        cout << "Printing schedule for " << IcoaCode << endl;
         for (auto& flightInfo: airportsVector[airportIndex]->getArivals())
         {
             cout << "Flight #" << flightInfo->getCallsign() << " arriving from " << flightInfo->getEstDepartureAirport() << ", tookoff at " << flightInfo->getFirstSeen() <<  " landed at " << flightInfo->getLastSeen() << endl;
         }
+        cout << "\n\n";
     }
-   
 }
 
 
