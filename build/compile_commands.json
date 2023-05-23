@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/vboxuser/projectLinux2/linux_project_2/build",
+  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/RunMe.cpp.o -c /home/vboxuser/projectLinux2/linux_project_2/RunMe.cpp",
+  "file": "/home/vboxuser/projectLinux2/linux_project_2/RunMe.cpp"
+}
+]
