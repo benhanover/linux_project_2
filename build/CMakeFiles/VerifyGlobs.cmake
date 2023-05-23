@@ -3,8 +3,12 @@
 cmake_policy(SET CMP0009 NEW)
 
 # MISSIONS at CMakeLists.txt:11 (file)
-file(GLOB NEW_GLOB LIST_DIRECTORIES true "/home/vboxuser/projectLinux2/linux_project_2/./missions/.cpp")
+file(GLOB NEW_GLOB LIST_DIRECTORIES true "/home/vboxuser/projectLinux2/linux_project_2/./missions/*.cpp")
 set(OLD_GLOB
+  "/home/vboxuser/projectLinux2/linux_project_2/./missions/functionc.cpp"
+  "/home/vboxuser/projectLinux2/linux_project_2/./missions/functions.cpp"
+  "/home/vboxuser/projectLinux2/linux_project_2/./missions/mission1.cpp"
+  "/home/vboxuser/projectLinux2/linux_project_2/./missions/mission2.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -12,8 +16,9 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # UTILITIES at CMakeLists.txt:10 (file)
-file(GLOB NEW_GLOB LIST_DIRECTORIES true "/home/vboxuser/projectLinux2/linux_project_2/./utilities/.cpp")
+file(GLOB NEW_GLOB LIST_DIRECTORIES true "/home/vboxuser/projectLinux2/linux_project_2/./utilities/*.cpp")
 set(OLD_GLOB
+  "/home/vboxuser/projectLinux2/linux_project_2/./utilities/utility.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

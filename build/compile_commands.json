@@ -3,5 +3,30 @@
   "directory": "/home/vboxuser/projectLinux2/linux_project_2/build",
   "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/RunMe.cpp.o -c /home/vboxuser/projectLinux2/linux_project_2/RunMe.cpp",
   "file": "/home/vboxuser/projectLinux2/linux_project_2/RunMe.cpp"
+},
+{
+  "directory": "/home/vboxuser/projectLinux2/linux_project_2/build",
+  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/utilities/utility.cpp.o -c /home/vboxuser/projectLinux2/linux_project_2/utilities/utility.cpp",
+  "file": "/home/vboxuser/projectLinux2/linux_project_2/utilities/utility.cpp"
+},
+{
+  "directory": "/home/vboxuser/projectLinux2/linux_project_2/build",
+  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/missions/functionc.cpp.o -c /home/vboxuser/projectLinux2/linux_project_2/missions/functionc.cpp",
+  "file": "/home/vboxuser/projectLinux2/linux_project_2/missions/functionc.cpp"
+},
+{
+  "directory": "/home/vboxuser/projectLinux2/linux_project_2/build",
+  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/missions/functions.cpp.o -c /home/vboxuser/projectLinux2/linux_project_2/missions/functions.cpp",
+  "file": "/home/vboxuser/projectLinux2/linux_project_2/missions/functions.cpp"
+},
+{
+  "directory": "/home/vboxuser/projectLinux2/linux_project_2/build",
+  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/missions/mission1.cpp.o -c /home/vboxuser/projectLinux2/linux_project_2/missions/mission1.cpp",
+  "file": "/home/vboxuser/projectLinux2/linux_project_2/missions/mission1.cpp"
+},
+{
+  "directory": "/home/vboxuser/projectLinux2/linux_project_2/build",
+  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/runMe.dir/missions/mission2.cpp.o -c /home/vboxuser/projectLinux2/linux_project_2/missions/mission2.cpp",
+  "file": "/home/vboxuser/projectLinux2/linux_project_2/missions/mission2.cpp"
 }
 ]

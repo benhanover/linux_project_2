@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <string>
@@ -25,12 +26,19 @@ public:
     {
        deleteAll(); 
     }    
-    void deleteAll();
     void addAirport(SingleAirport* airport)
     {
         airportsVector.push_back(airport);
     }
 
+    void deleteAll()
+    {
+        for (auto &airport : airportsVector)
+        {
+            delete airport;
+        }
+        airportsVector.clear();
+    }
     vector<SingleAirport *> getAirportsVector() const { return airportsVector; }
     void getAllAirportsNames(vector<string> &airportNames);
     vector<FlightInfo *> getFlightsByCallsign(string &callsign);
@@ -38,10 +46,16 @@ public:
     static string getPathType(string &path);
     void getAllPaths(vector<string> &paths);
     string getAirportNameFromPath(string &path);
-    bool checkIfAllInDB(vector<string>& paths, vector<string>& missing_names, int numOfCodesRecieved, char** codesRecievedArr);
-    void load_db(vector<string>& paths);
+
+    void load_db(vector<string> &paths);
+
+    bool checkIfAllInDB(vector<string> &paths, vector<string> &missing_names, int numOfCodesRecieved, vector<string> codesRecievedArr);
+
+    bool checkIfAllInDbAndUpdateMissing(vector<string> &missing_names, vector<string> codesRecievedArr);
+    
     void regenerate_db();
     bool isAircraftInDB(string code);
+    bool isAirportExist(string airportName);
 };
 
 

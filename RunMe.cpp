@@ -1,12 +1,6 @@
-#include "RunMe.h"
+#include "./RunMe.h"
 
-
-
-
-
-
-
-int main(int argc, char* argv[])
+int main()
 {
     System airports;
     int choice;
@@ -14,6 +8,7 @@ int main(int argc, char* argv[])
     vector<string> paths;
     paths.reserve(10);
     airports.getAllPaths(paths);
+    airports.load_db(paths);
 
     choice = getChoice();
     while (choice != 7) 
@@ -21,9 +16,7 @@ int main(int argc, char* argv[])
         executeChoice(choice,airports, paths);
         choice = getChoice();
     }
-
-    return 1;    
-    
+    return 1;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void printMenu()
@@ -41,19 +34,22 @@ void printMenu()
 
 int getChoice()
 {
-    int choice;
-    bool isValid = false;
+    char choice;
+    bool flag = true;
     printMenu();
     cin >> choice;
-    while(!isValid)
+    cin.ignore(); // Ignore any leftover newline characters from previous input
+    
+    while(flag)
     {
-        if(choice > 0 && choice < 8)
-            isValid = true;
+        if(choice > '0' && choice < '8')
+            return choice - '0';
         else
         {   
             cout << "Wrong choice, please choose again!" << endl;
             printMenu();
             cin >> choice;
+            cin.ignore(); // Ignore any leftover newline characters from previous input
         }
     }
     return choice;
@@ -64,7 +60,7 @@ void executeChoice(int choice,System& airports, vector<string> paths)
 {
     switch(choice)
     {
-        case 1: printAirportsArv();
+        case 1: printAirportsArv(airports, paths);
         break;
         case 2: printAirportSchedule(airports, paths);
         break;
@@ -81,17 +77,6 @@ void executeChoice(int choice,System& airports, vector<string> paths)
     }
 }
 
-void getInputFromUser(vector<string>& words, string message)
-{
-    cout << message << endl;
-    string line;
-    getline(cin, line);
-
-    istringstream iss(line);
-    string code;
-    while (iss >> code)
-        words.push_back(code);
-}
 
 void printAirportsArv()
 {
