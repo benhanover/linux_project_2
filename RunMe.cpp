@@ -45,13 +45,15 @@ int getChoice()
         if(choice > '0' && choice < '8')
             return choice - '0';
         else
-        {
+        {   
             cout << "Wrong choice, please choose again!" << endl;
             printMenu();
             cin >> choice;
             cin.ignore(); // Ignore any leftover newline characters from previous input
         }
     }
+    return choice;
+
 }
 
 void executeChoice(int choice,System& airports, vector<string> paths)
@@ -62,7 +64,7 @@ void executeChoice(int choice,System& airports, vector<string> paths)
         break;
         case 2: printAirportSchedule(airports, paths);
         break;
-        case 3:
+        case 3:printAllAircraftsFlights(airports);
         break;
         case 4: refreshDataBase(airports, paths);
         break;
