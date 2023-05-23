@@ -7,6 +7,7 @@
 #include <cstring>
 #include <filesystem>
 #include <algorithm>
+#include <unistd.h>
 
 using namespace std;
 namespace fs = std::filesystem;

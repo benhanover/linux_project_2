@@ -66,7 +66,7 @@ void executeChoice(int choice,System& airports, vector<string> paths)
         break;
         case 3:printAllAircraftsFlights(airports);
         break;
-        case 4:
+        case 4: refreshDataBase(airports, paths);
         break;
         case 5:
         break;

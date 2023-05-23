@@ -24,4 +24,4 @@ void printSingleAircraftFlights(string& icao24, System& airports);
 
 
 //mission 4
-
+void refreshDataBase(System& airports, vector<string>paths);

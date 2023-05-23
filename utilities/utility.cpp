@@ -35,18 +35,30 @@ void System::regenerate_db()
 {
     vector<string> airportsNamesVector;
     getAllAirportsNames(airportsNamesVector);
-
-    fs::path currentPath = fs::current_path();
-    string projectPath = currentPath;
     string airportNames = "";
     for (auto& name:airportsNamesVector) 
         airportNames += name += " ";
 
+    fs::path buildPath = fs::current_path();
+    fs::path projectPath = fs::current_path().parent_path();
+
+    string s_projectPath = projectPath;
+    string s_buildPath = buildPath;
+
+    if (chdir(projectPath.c_str()) != 0) {
+        std::cout << "Failed to change directory.\n";
+    }
+
     //delete previous DB
-    system(((projectPath + "/clean.sh ") += airportNames).c_str());
+    system(((s_projectPath + "/clean.sh ") += airportNames).c_str());
     deleteAll();
     //create data base
-    system(((projectPath + "/flightScanner.sh ") += airportNames).c_str());
+    system(((s_projectPath + "/flightScanner.sh ") += airportNames).c_str());
+    
+    if (chdir(buildPath.c_str()) != 0) {
+        std::cout << "Failed to change directory.\n";
+    }
+    
     vector<string> paths;
     paths.reserve(10);
     getAllPaths(paths);
