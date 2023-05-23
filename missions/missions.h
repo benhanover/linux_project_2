@@ -19,4 +19,4 @@ void printAirportSchedule(System& airports, vector<string> paths);
 //mission 3
 
 //mission 4
-
+void refreshDataBase(System& airports, vector<string>paths);
