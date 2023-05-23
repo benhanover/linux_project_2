@@ -5,10 +5,10 @@ cmake_policy(SET CMP0009 NEW)
 # MISSIONS at CMakeLists.txt:11 (file)
 file(GLOB NEW_GLOB LIST_DIRECTORIES true "/home/vboxuser/projectLinux2/linux_project_2/./missions/*.cpp")
 set(OLD_GLOB
-  "/home/vboxuser/projectLinux2/linux_project_2/./missions/functionc.cpp"
   "/home/vboxuser/projectLinux2/linux_project_2/./missions/functions.cpp"
   "/home/vboxuser/projectLinux2/linux_project_2/./missions/mission1.cpp"
   "/home/vboxuser/projectLinux2/linux_project_2/./missions/mission2.cpp"
+  "/home/vboxuser/projectLinux2/linux_project_2/./missions/mission3.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

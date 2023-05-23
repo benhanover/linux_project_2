@@ -1,1 +1,4 @@
 take care of bad input.
+
+
+in mission3 - if there are codes that don't exist, ask for new?

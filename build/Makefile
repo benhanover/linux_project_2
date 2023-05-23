@@ -154,30 +154,6 @@ RunMe.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/RunMe.cpp.s
 .PHONY : RunMe.cpp.s
 
-missions/functionc.o: missions/functionc.cpp.o
-.PHONY : missions/functionc.o
-
-# target to build an object file
-missions/functionc.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/functionc.cpp.o
-.PHONY : missions/functionc.cpp.o
-
-missions/functionc.i: missions/functionc.cpp.i
-.PHONY : missions/functionc.i
-
-# target to preprocess a source file
-missions/functionc.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/functionc.cpp.i
-.PHONY : missions/functionc.cpp.i
-
-missions/functionc.s: missions/functionc.cpp.s
-.PHONY : missions/functionc.s
-
-# target to generate assembly for a file
-missions/functionc.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/functionc.cpp.s
-.PHONY : missions/functionc.cpp.s
-
 missions/functions.o: missions/functions.cpp.o
 .PHONY : missions/functions.o
 
@@ -250,6 +226,30 @@ missions/mission2.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission2.cpp.s
 .PHONY : missions/mission2.cpp.s
 
+missions/mission3.o: missions/mission3.cpp.o
+.PHONY : missions/mission3.o
+
+# target to build an object file
+missions/mission3.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission3.cpp.o
+.PHONY : missions/mission3.cpp.o
+
+missions/mission3.i: missions/mission3.cpp.i
+.PHONY : missions/mission3.i
+
+# target to preprocess a source file
+missions/mission3.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission3.cpp.i
+.PHONY : missions/mission3.cpp.i
+
+missions/mission3.s: missions/mission3.cpp.s
+.PHONY : missions/mission3.s
+
+# target to generate assembly for a file
+missions/mission3.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runMe.dir/build.make CMakeFiles/runMe.dir/missions/mission3.cpp.s
+.PHONY : missions/mission3.cpp.s
+
 utilities/utility.o: utilities/utility.cpp.o
 .PHONY : utilities/utility.o
 
@@ -286,9 +286,6 @@ help:
 	@echo "... RunMe.o"
 	@echo "... RunMe.i"
 	@echo "... RunMe.s"
-	@echo "... missions/functionc.o"
-	@echo "... missions/functionc.i"
-	@echo "... missions/functionc.s"
 	@echo "... missions/functions.o"
 	@echo "... missions/functions.i"
 	@echo "... missions/functions.s"
@@ -298,6 +295,9 @@ help:
 	@echo "... missions/mission2.o"
 	@echo "... missions/mission2.i"
 	@echo "... missions/mission2.s"
+	@echo "... missions/mission3.o"
+	@echo "... missions/mission3.i"
+	@echo "... missions/mission3.s"
 	@echo "... utilities/utility.o"
 	@echo "... utilities/utility.i"
 	@echo "... utilities/utility.s"
