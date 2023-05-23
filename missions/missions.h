@@ -16,6 +16,10 @@ void printAirportsArv(System& airports, vector<string> paths);
 void printAirportSchedule(System& airports, vector<string> paths);
 
 //--------------------------mission 3------------------------------
+//mission 3
+void printAllAircraftsFlights(System& airports);
+bool checkIfAllAircraftsInDB(System& airports, vector<string>& missing_names, vector<string> codesRecievedVec);
+void printSingleAircraftFlights(string& icao24, System& airports);
 
 //--------------------------mission 4------------------------------
 void refreshDataBase(System& airports, vector<string>paths);
