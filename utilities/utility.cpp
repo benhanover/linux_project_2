@@ -278,67 +278,82 @@ bool System::isAirportExist(string airportName)
 }
 
 
+// void System::addFileToZip(zip_t* archive, const std::filesystem::path& filePath, const std::filesystem::path& baseDirectory)
+// {
+//     std::filesystem::path relativePath = filePath.lexically_relative(baseDirectory);
+
+//     if (std::filesystem::is_directory(filePath))
+//     {
+//         zip_dir_add(archive, relativePath.string().c_str(), ZIP_FL_ENC_GUESS);
+
+//         for (const auto& entry : std::filesystem::directory_iterator(filePath))
+//         {
+//             addFileToZip(archive, entry.path(), baseDirectory);
+//         }
+//     }
+//     else
+//     {
+
+//         zip_source_t* source = zip_source_file(archive, filePath.string().c_str(), 0, 0);
+//         if (source == nullptr)
+//         {
+//             std::cerr << "Failed to open the file: " << filePath << std::endl;
+//             return;
+//         }
+
+//         zip_file_add(archive, relativePath.string().c_str(), source, ZIP_FL_ENC_GUESS);
+//         zip_source_keep(source);
+//     }
+// }
+
 void System::zipDirectory(const std::string& directoryPath, const std::string& zipFilePath)
 {
-    // Open the ZIP file for writing
-    int error;
-    zip* archive = zip_open(zipFilePath.c_str(), ZIP_CREATE | ZIP_TRUNCATE, &error);
+    zip_t* archive = zip_open(zipFilePath.c_str(), ZIP_CREATE | ZIP_TRUNCATE, nullptr);
     if (archive == nullptr)
     {
         std::cerr << "Failed to open the ZIP file: " << zip_strerror(archive) << std::endl;
         return;
     }
 
-    // Recursively add files from the directory to the ZIP archive
-    zip_source_t* source = nullptr;
-    zip_int64_t index = 0;
-    zip_uint64_t filesAdded = 0;
+    std::filesystem::path basePath(directoryPath);
+    addFileToZip(archive, basePath, basePath);
 
-    // Walk through the directory and add each file/directory to the archive
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(directoryPath))
-    {
-        const std::string& filePath = entry.path().string();
-
-        // Exclude specific files
-        std::string fileName = entry.path().filename().string();
-        if (fileName == "clean.sh" || fileName == "flightScanner.sh")
-            continue;
-
-        // Open the file for reading
-        source = zip_source_file(archive, filePath.c_str(), 0, 0);
-        if (source == nullptr)
-        {
-            std::cerr << "Failed to open the file: " << filePath << std::endl;
-            continue;
-        }
-
-        // Add the file/directory to the ZIP archive
-        std::string archiveFilePath = filePath.substr(directoryPath.length()); // Preserve the relative path
-
-        // Adjust archiveFilePath for directories to ensure they are created in the archive
-        if (std::filesystem::is_directory(filePath))
-            archiveFilePath += '/'; // Add a trailing slash for directories
-
-        index = zip_file_add(archive, archiveFilePath.c_str(), source, ZIP_FL_ENC_GUESS);
-        if (index < 0)
-        {
-            std::cerr << "Failed to add the file/directory to the ZIP archive: " << zip_strerror(archive) << std::endl;
-            zip_source_free(source);
-            continue;
-        }
-
-        ++filesAdded;
-
-        // Close the source after adding the file/directory to the archive
-        zip_source_close(source);
-    }
-
-    // Close the ZIP archive
     if (zip_close(archive) != 0)
     {
         std::cerr << "Failed to close the ZIP archive: " << zip_strerror(archive) << std::endl;
         return;
     }
 
-    std::cout << "Successfully zipped " << filesAdded << " files/directories." << std::endl;
+    std::cout << "Successfully zipped the directory." << std::endl;
+}
+
+void System::addFileToZip(zip_t* archive, const std::filesystem::path& filePath, const std::filesystem::path& baseDirectory)
+{
+    std::filesystem::path relativePath = filePath.lexically_relative(baseDirectory);
+
+    if (std::filesystem::is_directory(filePath))
+    {
+        zip_dir_add(archive, relativePath.string().c_str(), ZIP_FL_ENC_GUESS);
+
+        for (const auto& entry : std::filesystem::directory_iterator(filePath))
+        {
+            addFileToZip(archive, entry.path(), baseDirectory);
+        }
+    }
+    else
+    {
+        std::string fileName = filePath.filename().string();
+        if (fileName != "clean.sh" && fileName != "flightScanner.sh")
+        {
+            zip_source_t* source = zip_source_file(archive, filePath.string().c_str(), 0, 0);
+            if (source == nullptr)
+            {
+                std::cerr << "Failed to open the file: " << filePath << std::endl;
+                return;
+            }
+
+            zip_file_add(archive, relativePath.string().c_str(), source, ZIP_FL_ENC_GUESS);
+            zip_source_keep(source);
+        }
+    }
 }

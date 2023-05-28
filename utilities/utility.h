@@ -59,8 +59,11 @@ public:
     void regenerate_db();
     bool isAircraftInDB(string code);
     bool isAirportExist(string airportName);
-    void zipDirectory(const std::string& directoryPath, const std::string& zipFilePath);
+    // void zipDirectory(const std::string& directoryPath, const std::string& zipFilePath);
 
+    void addFileToZip(zip_t *archive, const std::filesystem::path &filePath, const std::filesystem::path &baseDirectory);
+
+    void zipDirectory(const std::string &directoryPath, const std::string &zipFilePath);
 };
 
 
@@ -145,3 +148,7 @@ public:
             airport.departures.push_back(this);
     }
 };
+
+
+
+
