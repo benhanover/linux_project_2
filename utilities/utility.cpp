@@ -40,20 +40,23 @@ void System::regenerate_db()
         airportNames += name += " ";
 
     fs::path buildPath = fs::current_path();
-    fs::path projectPath = fs::current_path().parent_path();
+    fs::path DB_path = fs::current_path().parent_path()/"DB";
 
-    string s_projectPath = projectPath;
+    
+    string s_DB_path = DB_path;
     string s_buildPath = buildPath;
 
-    if (chdir(projectPath.c_str()) != 0) {
+    if (chdir(s_DB_path.c_str()) != 0) {
         std::cout << "Failed to change directory.\n";
     }
-
+    string clean = "./clean.sh "; 
+    string flightScanner = "./flightScanner.sh ";
     //delete previous DB
-    system(((s_projectPath + "/clean.sh ") += airportNames).c_str());
+    system((clean += airportNames).c_str());
     deleteAll();
     //create data base
-    system(((s_projectPath + "/flightScanner.sh ") += airportNames).c_str());
+    system((flightScanner += airportNames).c_str());
+
     
     if (chdir(buildPath.c_str()) != 0) {
         std::cout << "Failed to change directory.\n";
