@@ -8,6 +8,8 @@
 #include <filesystem>
 #include <algorithm>
 #include <unistd.h>
+#include <zip.h>
+#include <sys/stat.h>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -57,6 +59,8 @@ public:
     void regenerate_db();
     bool isAircraftInDB(string code);
     bool isAirportExist(string airportName);
+    void zipDirectory(const std::string& directoryPath, const std::string& zipFilePath);
+
 };
 
 

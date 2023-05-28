@@ -68,7 +68,7 @@ void executeChoice(int choice,System& airports, vector<string> paths)
         break;
         case 4: refreshDataBase(airports, paths);
         break;
-        case 5:
+        case 5: zipDataBase(airports);
         break;
         case 6:
         break;
