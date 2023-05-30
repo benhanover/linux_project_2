@@ -3,22 +3,89 @@
 int main()
 {
     System airports;
-    int choice;
-
     vector<string> paths;
+
     paths.reserve(10);
     airports.getAllPaths(paths);
     airports.load_db(paths);
 
-    choice = getChoice();
-    while (choice != 7) 
-    {
-        executeChoice(choice,airports, paths);
-        choice = getChoice();
-    }
+    execute(airports, paths);
+
     return 1;
 }
 //---------------------------------functions------------------------------------
+void execute(System& airports, vector<string> paths)
+{
+    int choice;
+    int parentToChild[2];  // Pipe for parent to child communication
+    int childToParent[2];  // Pipe for child to parent communication
+
+    if (pipe(parentToChild) == -1 || pipe(childToParent) == -1) {
+        cerr << "Pipe creation failed." << endl;
+        return;
+    }
+
+    pid_t pid = fork();
+
+    if (pid < 0)
+    {
+        cout << "Error forking process" << endl;
+        return;
+    }
+
+    else if (pid > 0) // Parent process
+    {
+        close(parentToChild[READ_END]);  // Close unused read end of parent-to-child pipe
+        close(childToParent[WRITE_END]);  // Close unused write end of child-to-parent pipe
+
+        while (true) 
+        {
+            choice = getChoice();
+
+            // Send the choice to the child process
+            write(parentToChild[WRITE_END], &choice, sizeof(choice));
+
+            if (choice == 7)
+            {
+                break; // End the loop if the user chooses option 7 to exit
+            }
+
+            // Wait for child process to finish
+            int status;
+            waitpid(pid, &status, 0);
+
+            char buffer[BUFFER_SIZE];
+            memset(buffer, 0, sizeof(buffer));
+            ssize_t bytesRead = read(childToParent[0], buffer, sizeof(buffer) - 1);
+
+            //Print the data that received from the child 
+            cout.write(buffer, bytesRead);
+            cout << endl;
+        }
+        close(parentToChild[WRITE_END]);
+        close(childToParent[READ_END]); 
+    }
+
+    else // Child process
+    {
+        close(parentToChild[WRITE_END]);  // Close unused write end of parent-to-child pipe
+        close(childToParent[READ_END]);  // Close unused read end of child-to-parent pipe
+        int choice;
+        while (true) 
+        {
+            ssize_t bytesRead = read(parentToChild[0], &choice, sizeof(choice));
+            if(bytesRead <=0) //end of data
+                break;
+
+            executeChoice(choice,airports, paths);
+        }
+        close(parentToChild[READ_END]); // Close the read end of parent-to-child pipe
+        close(childToParent[WRITE_END]); // Close the write end of child-to-parent pipe
+    }
+}
+
+
+
 void printMenu()
 {
     cout << "*************************************" << endl;
@@ -46,7 +113,7 @@ int getChoice()
             return choice - '0';
         else
         {   
-            cout << "Wrong choice, please choose again!" << endl;
+            cout << "Invalid choice, please choose again!" << endl;
             printMenu();
             cin >> choice;
             cin.ignore(); // Ignore any leftover newline characters from previous input

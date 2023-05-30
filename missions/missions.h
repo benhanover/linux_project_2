@@ -1,7 +1,7 @@
 #pragma once
 #include "../utilities/utility.h"
 #include <sstream>
-
+#include <sys/wait.h>
 
 //--------------------------functions------------------------------
 void getInputFromUser(vector<string>& words, string message);
