@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)              # Enable c++20 standard
 
 set(CMAKE_BUILD_TYPE Debug)
 
+add_compile_options(-w)  # Suppress all warnings
+
 # Find libzip package
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBZIP REQUIRED IMPORTED_TARGET libzip)

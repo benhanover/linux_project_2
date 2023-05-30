@@ -278,34 +278,6 @@ bool System::isAirportExist(string airportName)
 }
 
 
-// void System::addFileToZip(zip_t* archive, const std::filesystem::path& filePath, const std::filesystem::path& baseDirectory)
-// {
-//     std::filesystem::path relativePath = filePath.lexically_relative(baseDirectory);
-
-//     if (std::filesystem::is_directory(filePath))
-//     {
-//         zip_dir_add(archive, relativePath.string().c_str(), ZIP_FL_ENC_GUESS);
-
-//         for (const auto& entry : std::filesystem::directory_iterator(filePath))
-//         {
-//             addFileToZip(archive, entry.path(), baseDirectory);
-//         }
-//     }
-//     else
-//     {
-
-//         zip_source_t* source = zip_source_file(archive, filePath.string().c_str(), 0, 0);
-//         if (source == nullptr)
-//         {
-//             std::cerr << "Failed to open the file: " << filePath << std::endl;
-//             return;
-//         }
-
-//         zip_file_add(archive, relativePath.string().c_str(), source, ZIP_FL_ENC_GUESS);
-//         zip_source_keep(source);
-//     }
-// }
-
 void System::zipDirectory(const std::string& directoryPath, const std::string& zipFilePath)
 {
     zip_t* archive = zip_open(zipFilePath.c_str(), ZIP_CREATE | ZIP_TRUNCATE, nullptr);
@@ -342,18 +314,16 @@ void System::addFileToZip(zip_t* archive, const std::filesystem::path& filePath,
     }
     else
     {
-        std::string fileName = filePath.filename().string();
-        if (fileName != "clean.sh" && fileName != "flightScanner.sh")
+        // std::string fileName = filePath.filename().string();
+        // if (fileName != "clean.sh" && fileName != "flightScanner.sh")
+        zip_source_t *source = zip_source_file(archive, filePath.string().c_str(), 0, 0);
+        if (source == nullptr)
         {
-            zip_source_t* source = zip_source_file(archive, filePath.string().c_str(), 0, 0);
-            if (source == nullptr)
-            {
-                std::cerr << "Failed to open the file: " << filePath << std::endl;
-                return;
-            }
-
-            zip_file_add(archive, relativePath.string().c_str(), source, ZIP_FL_ENC_GUESS);
-            zip_source_keep(source);
+            std::cerr << "Failed to open the file: " << filePath << std::endl;
+            return;
         }
+
+        zip_file_add(archive, relativePath.string().c_str(), source, ZIP_FL_ENC_GUESS);
+        zip_source_keep(source);
     }
 }

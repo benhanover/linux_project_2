@@ -25,3 +25,8 @@ void refreshDataBase(System& airports, vector<string>paths);
 
 //--------------------------mission 5------------------------------
 void zipDataBase(System& airports);
+
+
+
+//--------------------------mission 7------------------------------
+void gracefulExit(System& airports);

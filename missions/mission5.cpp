@@ -9,5 +9,5 @@ void zipDataBase(System& airports)
     string s_DB_path = DB_path; 
     string s_projectPath = projectPath;
 
-    airports.zipDirectory(s_DB_path,s_projectPath);
+    airports.zipDirectory(s_DB_path, s_projectPath);
 }
