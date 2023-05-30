@@ -1,12 +1,9 @@
 #include "./RunMe.h"
 
+System airports;
 int main()
 {
-
-    // Set up the signal handler
-
-
-    System airports;
+    // System airports;
     int choice;
     string projectPath = fs::current_path().parent_path()/"DB";
     string DBZipPath = fs::current_path().parent_path()/"DB.zip";
@@ -18,11 +15,7 @@ int main()
     airports.getAllPaths(paths);
     airports.load_db(paths);
 
-    SignalHandlerData test;
-    test.airportsPtr = &airports;
-    // Set up the signal handler with the wrapper function
-    signal(SIGINT, SignalHandlerData::handleSignalWrapper);
-
+    signal(SIGINT, handleSIGINT);
 
     choice = getChoice();
     while (true) 
@@ -165,3 +158,9 @@ void unzipDB(const string& zipFilePath, const string& destinationPath)
 
 
 
+void handleSIGINT(int signalNumber)
+{
+    cout << "You sent SIGINT signal.. exiting gracefully :)" << endl;
+    gracefulExit(airports);
+    exit(signalNumber);
+}

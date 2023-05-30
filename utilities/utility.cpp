@@ -51,6 +51,10 @@ void System::regenerate_db()
     }
     string clean = "./clean.sh "; 
     string flightScanner = "./flightScanner.sh ";
+
+    system("chmod u+x clean.sh");
+    system("chmod u+x flightScanner.sh");
+
     //delete previous DB
     system((clean += airportNames).c_str());
     deleteAll();
