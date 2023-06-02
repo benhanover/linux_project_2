@@ -21,19 +21,52 @@ void execute(System& airports, vector<string> paths)
     int childToParent[2];  // Pipe for child to parent communication
 
     if (pipe(parentToChild) == -1 || pipe(childToParent) == -1) {
-        cerr << "Pipe creation failed." << endl;
+        cout << "Pipe creation failed." << endl;
         return;
     }
 
     pid_t pid = fork();
 
-    if (pid < 0)
+    if (pid == -1)
     {
         cout << "Error forking process" << endl;
         return;
     }
 
-    else if (pid > 0) // Parent process
+    else if (pid == 0) // Child process
+    {
+        close(parentToChild[WRITE_END]);  // Close unused write end of parent-to-child pipe
+        close(childToParent[READ_END]);  // Close unused read end of child-to-parent pipe
+
+        dup2(parentToChild[READ_END], STDIN_FILENO);    // Redirect standard input to the read end of parent-to-child pipe
+        dup2(childToParent[WRITE_END], STDOUT_FILENO);   // Redirect standard output to the write end of child-to-parent pipe
+
+        close(parentToChild[READ_END]);  // Close read end of parent-to-child pipe
+        close(childToParent[WRITE_END]);  // Close write end of child-to-parent pipe
+
+        while (true) 
+        {
+            ssize_t bytesRead = read(STDIN_FILENO, &choice, sizeof(choice));
+            if (bytesRead <= 0) // End of data
+                break;
+
+            if (choice == 7)
+            {
+                break; // End the loop if the user chooses option 7 to exit
+            }
+            // Execute the choice in the child process
+            //executeChoice(choice, airports, paths);
+            //executeChoice(choice, airports, paths);
+            //write(STDOUT_FILENO, result.c_str(), result.length());
+            string result = "Process child worked !\n";
+            write(STDOUT_FILENO, result.c_str(), result.length());
+        }
+        // // // Close the duplicated standard input and output
+        close(STDIN_FILENO);   // Close standard input
+        close(STDOUT_FILENO);  // Close standard output
+    }
+
+    else // Parent process
     {
         close(parentToChild[READ_END]);  // Close unused read end of parent-to-child pipe
         close(childToParent[WRITE_END]);  // Close unused write end of child-to-parent pipe
@@ -44,45 +77,30 @@ void execute(System& airports, vector<string> paths)
 
             // Send the choice to the child process
             write(parentToChild[WRITE_END], &choice, sizeof(choice));
-
             if (choice == 7)
             {
                 break; // End the loop if the user chooses option 7 to exit
             }
 
-            // Wait for child process to finish
-            int status;
-            waitpid(pid, &status, 0);
-
+            // Read the output of the child process
             char buffer[BUFFER_SIZE];
-            memset(buffer, 0, sizeof(buffer));
-            ssize_t bytesRead = read(childToParent[0], buffer, sizeof(buffer) - 1);
-
-            //Print the data that received from the child 
-            cout.write(buffer, bytesRead);
-            cout << endl;
+            ssize_t bytesRead = read(childToParent[0], buffer, BUFFER_SIZE - 1);
+            if (bytesRead > 0) 
+            {
+                buffer[bytesRead] = '\0';  //if there is any more things in the buffer it clean them.
+                cout << "Output from child process:\n" << buffer << endl;
+            }
         }
         close(parentToChild[WRITE_END]);
-        close(childToParent[READ_END]); 
-    }
+        close(childToParent[READ_END]);
 
-    else // Child process
-    {
-        close(parentToChild[WRITE_END]);  // Close unused write end of parent-to-child pipe
-        close(childToParent[READ_END]);  // Close unused read end of child-to-parent pipe
-        int choice;
-        while (true) 
-        {
-            ssize_t bytesRead = read(parentToChild[0], &choice, sizeof(choice));
-            if(bytesRead <=0) //end of data
-                break;
-
-            executeChoice(choice,airports, paths);
-        }
-        close(parentToChild[READ_END]); // Close the read end of parent-to-child pipe
-        close(childToParent[WRITE_END]); // Close the write end of child-to-parent pipe
+        // Wait for the child process to exit
+        int status;
+        waitpid(pid, &status, 0);
     }
 }
+
+
 
 
 
@@ -139,7 +157,7 @@ void executeChoice(int choice,System& airports, vector<string> paths)
         break;
         case 6:
         break;
-        case 7:
+        case 7: 
         break;
     }
 }
