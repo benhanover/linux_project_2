@@ -51,7 +51,18 @@ void execute(System& airports, vector<string> paths)
 
     else if (pid == 0) // Child process
     {
-        // runChildProccess();
+        runChildProcess(parentToChild, childToParent);
+    }
+
+    else // Parent process
+    {
+        runParentProcess(parentToChild, childToParent, pid);
+    }
+}
+
+
+void runChildProcess(int* parentToChild,int* childToParent)
+{
         close(parentToChild[WRITE_END]);  // Close unused write end of parent-to-child pipe
         close(childToParent[READ_END]);  // Close unused read end of child-to-parent pipe
 
@@ -60,12 +71,25 @@ void execute(System& airports, vector<string> paths)
 
         close(parentToChild[READ_END]);  // Close read end of parent-to-child pipe
         close(childToParent[WRITE_END]);  // Close write end of child-to-parent pipe
-
+        int choice;
         while (true) 
         {
             ssize_t bytesRead = read(STDIN_FILENO, &choice, sizeof(choice));
             if (bytesRead <= 0) // End of data
                 break;
+            if(choice > 0 && choice < 4)
+            {
+                // Read the output of the child process
+                char buffer[BUFFER_SIZE];
+                ssize_t bytesRead = read(parentToChild[READ_END], buffer, BUFFER_SIZE - 1);
+                cout << buffer <<endl;
+                write(STDOUT_FILENO, buffer, sizeof(buffer));
+
+            }
+            else
+            {
+
+            }
 
             if (choice == 7)
             {
@@ -81,23 +105,23 @@ void execute(System& airports, vector<string> paths)
         // // // Close the duplicated standard input and output
         close(STDIN_FILENO);   // Close standard input
         close(STDOUT_FILENO);  // Close standard output
-    }
+}
 
-    else // Parent process
-    {
-        // runParentProcess();
+
+void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
+{
         close(parentToChild[READ_END]);  // Close unused read end of parent-to-child pipe
         close(childToParent[WRITE_END]);  // Close unused write end of child-to-parent pipe
-
+        int choice;
+        vector<string> codeNames;
         while (true) 
         {
             choice = getChoice();
-
-            // Send the choice to the child process
             write(parentToChild[WRITE_END], &choice, sizeof(choice));
-            if (choice == 7)
+            if(choice > 0 && choice < 4)
             {
-                break; // End the loop if the user chooses option 7 to exit
+                getInputForChoice(choice, codeNames);
+                write(parentToChild[WRITE_END], &codeNames, sizeof(codeNames));
             }
 
             // Read the output of the child process
@@ -115,10 +139,29 @@ void execute(System& airports, vector<string> paths)
         // Wait for the child process to exit
         int status;
         waitpid(pid, &status, 0);
-    }
 }
 
-
+void getInputForChoice(int choice, vector<string>& codeNames)
+{
+    switch(choice)
+    {
+        case 1: 
+        {
+            getInputFromUser(codeNames, "Insert airports ICOA code names to print arrivals:");
+        }
+        break;
+        case 2: 
+        {
+            getInputFromUser(codeNames, "Insert airports names to print the full airport schedule:");
+        }
+        break;
+        case 3:
+        {
+            getInputFromUser(codeNames,"Please enter icao24 codes of aircrafts, in order to see their schedule.");
+        }
+        break;
+    }
+}
 
 
 
