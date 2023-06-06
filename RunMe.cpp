@@ -51,7 +51,7 @@ void execute(System& airports, vector<string> paths)
 
     else if (pid == 0) // Child process
     {
-        runChildProcess(parentToChild, childToParent);
+        runChildProcess(parentToChild, childToParent, paths, airports);
     }
 
     else // Parent process
@@ -61,7 +61,7 @@ void execute(System& airports, vector<string> paths)
 }
 
 
-void runChildProcess(int* parentToChild,int* childToParent)
+void runChildProcess(int* parentToChild,int* childToParent, vector<string> paths, System& airports)
 {
         close(parentToChild[WRITE_END]);  // Close unused write end of parent-to-child pipe
         close(childToParent[READ_END]);  // Close unused read end of child-to-parent pipe
@@ -71,7 +71,8 @@ void runChildProcess(int* parentToChild,int* childToParent)
 
         close(parentToChild[READ_END]);  // Close read end of parent-to-child pipe
         close(childToParent[WRITE_END]);  // Close write end of child-to-parent pipe
-        int choice;
+        int choice, vectorSize;
+        vector<string> codeNames;
         while (true) 
         {
             ssize_t bytesRead = read(STDIN_FILENO, &choice, sizeof(choice));
@@ -79,12 +80,25 @@ void runChildProcess(int* parentToChild,int* childToParent)
                 break;
             if(choice > 0 && choice < 4)
             {
-                // Read the output of the child process
-                char buffer[BUFFER_SIZE];
-                ssize_t bytesRead = read(parentToChild[READ_END], buffer, BUFFER_SIZE - 1);
-                cout << buffer <<endl;
-                write(STDOUT_FILENO, buffer, sizeof(buffer));
+                
+                bytesRead = read(STDIN_FILENO, &vectorSize, sizeof(vectorSize));
+                codeNames.clear();
+                codeNames.reserve(vectorSize);
+                char* buffer = new char[BUFFER_SIZE];
+                for (int i = 0; i < vectorSize; ++i)
+                {
+                    bytesRead = read(STDIN_FILENO, buffer, sizeof(buffer));
+                    if (bytesRead > 0)
+                    {
+                        buffer[bytesRead] = '\0';
+                        codeNames.emplace_back(buffer);
+                    }
+                }
 
+                bool allGood = true;
+                
+                getDataAndSendToParent(choice,airports, codeNames, paths); //check if needs the pathsS!!!!!!
+                //cout << output.c_str();
             }
             else
             {
@@ -95,33 +109,32 @@ void runChildProcess(int* parentToChild,int* childToParent)
             {
                 break; // End the loop if the user chooses option 7 to exit
             }
-            // Execute the choice in the child process
-            //executeChoice(choice, airports, paths);
-            //executeChoice(choice, airports, paths);
-            //write(STDOUT_FILENO, result.c_str(), result.length());
-            string result = "Process child worked !\n";
-            write(STDOUT_FILENO, result.c_str(), result.length());
         }
         // // // Close the duplicated standard input and output
         close(STDIN_FILENO);   // Close standard input
         close(STDOUT_FILENO);  // Close standard output
-}
 
+}
 
 void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
 {
         close(parentToChild[READ_END]);  // Close unused read end of parent-to-child pipe
         close(childToParent[WRITE_END]);  // Close unused write end of child-to-parent pipe
-        int choice;
+        int choice, vectorSize;
         vector<string> codeNames;
         while (true) 
         {
             choice = getChoice();
+            getInputForChoice(choice, codeNames);
             write(parentToChild[WRITE_END], &choice, sizeof(choice));
             if(choice > 0 && choice < 4)
             {
-                getInputForChoice(choice, codeNames);
-                write(parentToChild[WRITE_END], &codeNames, sizeof(codeNames));
+                vectorSize = codeNames.size();
+                write(parentToChild[WRITE_END], &vectorSize, sizeof(vectorSize));
+                for (const auto& name : codeNames)
+                {
+                    write(parentToChild[WRITE_END], name.c_str(), name.size() + 1);  // Include null terminator
+                }
             }
 
             // Read the output of the child process
@@ -129,7 +142,7 @@ void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
             ssize_t bytesRead = read(childToParent[0], buffer, BUFFER_SIZE - 1);
             if (bytesRead > 0) 
             {
-                buffer[bytesRead] = '\0';  //if there is any more things in the buffer it clean them.
+                buffer[bytesRead-1] = '\0';  //if there is any more things in the buffer it clean them.
                 cout << "Output from child process:\n" << buffer << endl;
             }
         }
@@ -162,8 +175,6 @@ void getInputForChoice(int choice, vector<string>& codeNames)
         break;
     }
 }
-
-
 
 void printMenu()
 {
@@ -202,17 +213,17 @@ int getChoice()
 
 }
 
-void sendChoiceToParent(int choice,System& airports, vector<string> paths)
+void getDataAndSendToParent(int choice,System& airports, vector<string> codeNames)
 {
     switch(choice)
     {
-        case 1: printAirportsArv(airports, paths);
+        case 1: printAirportsArv(airports, codeNames);
         break;
-        case 2: printAirportSchedule(airports, paths);
+        case 2: printAirportSchedule(airports);
         break;
         case 3:printAllAircraftsFlights(airports);
         break;
-        case 4: refreshDataBase(airports, paths);
+        case 4: refreshDataBase(airports);
         break;
         case 5: zipDataBase(airports);
         break;
@@ -222,9 +233,6 @@ void sendChoiceToParent(int choice,System& airports, vector<string> paths)
         break;
     }
 }
-
-
-
 
 
 void unzipDB(const string& zipFilePath, const string& destinationPath)
@@ -292,8 +300,6 @@ void unzipDB(const string& zipFilePath, const string& destinationPath)
     zip_close(archive);
     cout << "Successfully unzipped the directory." << endl;
 }
-
-
 
 void handleSIGINT(int signalNumber)
 {

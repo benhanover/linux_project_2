@@ -1,12 +1,11 @@
 #include "./missions.h"
 
 
-string getNewNameFromDBorRerunScript(string missing_name, vector<string>& paths, System& airports);
 void printFullAirportSchedule(string& IcoaCode, System& airports);
 int compare2Flights(FlightInfo* f1, FlightInfo* f2);
 
 
-void printAirportSchedule(System& airports, vector<string> paths)
+void printAirportSchedule(System& airports)
 {
     vector<string> airportsNames;
     getInputFromUser(airportsNames, "Insert airports names to print the full airport schedule:");
@@ -28,37 +27,6 @@ void printAirportSchedule(System& airports, vector<string> paths)
     {
         curAirportName = airportsNames[i]; 
         printFullAirportSchedule(curAirportName,airports);
-    }
-}
-
-
-string getNewNameFromDBorRerunScript(string missing_name, vector<string>& paths,System& airports)
-{
-    int option;
-    string wantedName;
-    cout << "The first ICOA code name inserted (" << missing_name << ") doesn't exist in current database." << endl;
-    cout << "Please choose one of the following options:" << endl;
-    cout << "Press 1 to run script with this name to try download info to database." << endl;
-    cout << "Press 2 to choose code name that exist in the database." << endl;
-    cin >> option;
-
-    fs::path currentPath = fs::current_path();
-    string projectPath = currentPath;
-    string airportName = " " + missing_name;
-   
-    if (option == 1)        
-    {
-       system(((projectPath + "/flightScanner.sh ") += airportName).c_str());
-       return "";
-    }
-    else
-    {
-        cout << "This is a list of names that exist in the database:" << endl;
-        for (int i=0; i < paths.size(); i += 2)
-            cout << airports.getAirportNameFromPath(paths[i]) << "  ";
-        cout << endl << "Please choose only 1 name from this list." << endl;
-        cin >> wantedName;
-        return wantedName;
     }
 }
 

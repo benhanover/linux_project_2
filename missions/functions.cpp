@@ -26,7 +26,7 @@ void notAllInDB(vector<string>& missing_names, System& airports)
     for (int i = 0; i < missing_names.size(); i++)
     cout << missing_names[i] << ' ';
     cout << endl;
-        
+    
     cout << "You have 2 options" << endl;
     cout << "Press 1 to run script with these names to try download info to database." << endl;
     cout << "Press 2 to display data of airports that already exist." << endl ;

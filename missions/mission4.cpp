@@ -1,7 +1,7 @@
 #include "./missions.h"
 
 
-void refreshDataBase(System& airports, vector<string>paths)
+void refreshDataBase(System& airports)
 {
     airports.regenerate_db();
 }
