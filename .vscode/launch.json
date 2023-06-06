@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Parent Process",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/build/runMe",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/build",
+        "environment": [],
+        "externalConsole": true,
+        "preLaunchTask": "build"
+      },
+      {
+        "name": "Child Process",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/build/runMe",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/build",
+        "environment": [],
+        "externalConsole": true,
+        "preLaunchTask": "build",
+        "setupCommands": [
+          {
+            "text": "-exec -set follow-fork-mode child"
+          },
+          {
+            "description": "Enable pretty-printing for gdb",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+          },
+          {
+            "description": "Fork follows Child process",
+            "text": "set follow-fork-mode child",
+            "ignoreFailures": true
+          },
+          {
+            "description": "Fork will keep the other process attached to debugger",
+            "text": "set detach-on-fork off",
+            "ignoreFailures": true
+          }
+        ]
+      }
+    ]
+  }

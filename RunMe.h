@@ -13,11 +13,14 @@ void handleSIGINT(int signalNumber);
 void sendChoiceToParent(int choice,System& airports, vector<string> paths);
 void printMenu();
 int getChoice();
-void execute(System& airports, vector<string> paths);
+void execute(System& airports/* , vector<string> paths */);
 void executeChoice(int choice,System& airports, vector<string> paths);
 void unzipDB(const string& zipFilePath, const string& destinationPath);
 void getInputForChoice(int choice, vector<string>& codeNames);
 
+
+void writeToPipe(int fd, vector<string>& data);
+vector<string> readFromPipe(int fd);
 
 
 

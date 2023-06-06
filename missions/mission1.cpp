@@ -12,7 +12,11 @@ void printAirportsArv(System& airports, vector<string> paths)
     allInDB = airports.checkIfAllInDbAndUpdateMissing(missing_names, airportsCodeNames);
     
     if (!allInDB)
-         notAllInDB(missing_names, airports);
+    {
+        cout << "Not all ICOA code names inserted exist in current database." << endl;
+        cout << "Displaying data of airports that exist." << endl ;
+    }
+        // notAllInDB(missing_names, airports);
     else
          cout << "All in DB. Printing as asked." << endl;
     
