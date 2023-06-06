@@ -17,7 +17,7 @@ void getInputFromUser(vector<string>& words, string message)
 }
 
 
-void notAllInDB(vector<string>& missing_names, System& airports)
+/*void notAllInDB(vector<string>& missing_names, System& airports)
 {
     int option;
 
@@ -56,4 +56,4 @@ void notAllInDB(vector<string>& missing_names, System& airports)
     paths.reserve(10);
     airports.getAllPaths(paths);
     airports.load_db(paths);
-}
+}*/

@@ -10,13 +10,16 @@ void printAllAircraftsFlights(System& airports)
     missing_names.reserve(20);
     int numOfCodes;
    
-    getInputFromUser(wantedCodes,"Please enter icao24 codes of aircrafts, in order to see their schedule.");
-
     bool allInDB = false;
     allInDB = checkIfAllAircraftsInDB(airports,missing_names,wantedCodes);
-    
-    if (!allInDB)
-        cout << "Not all aircrafts in database. Printing only those that exist." << endl;
+    if (!allInDB) //This function will print the massages to the "childToParent" pipe and than the parent process will print it to the screen
+    {
+        cout << "Not all ICOA code names inserted exist in current database." << endl; 
+        cout << "These names doesn't exist in the database:" << endl;
+        for (int i = 0; i < missing_names.size(); i++)
+            cout << missing_names[i] << ' ';
+        cout << endl;
+    }
     
     string curAircraft;
 
@@ -51,8 +54,6 @@ bool checkIfAllAircraftsInDB(System& airports, vector<string>& missing_names, ve
         return false;
 
 }
-
-
 
 void printSingleAircraftFlights(string& icao24, System& airports)
 {

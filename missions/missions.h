@@ -5,7 +5,7 @@
 
 //--------------------------functions------------------------------
 void getInputFromUser(vector<string>& words, string message);
-void notAllInDB(vector<string>& missing_names, System& airports);
+//void notAllInDB(vector<string>& missing_names, System& airports);
 
 //--------------------------mission 1------------------------------
 
@@ -13,7 +13,7 @@ void printSingleAirportArv(System& airports,string& IcoaCode);
 void printAirportsArv(System& airports, vector<string> airportsCodeNames);
 //--------------------------mission 2------------------------------
 
-void printAirportSchedule(System& airports);
+void printAirportSchedule(System& airports, vector<string> airportsNames);
 
 //--------------------------mission 3------------------------------
 void printAllAircraftsFlights(System& airports);

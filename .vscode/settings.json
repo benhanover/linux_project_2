@@ -6,6 +6,7 @@
         "string_view": "cpp",
         "random": "cpp",
         "iosfwd": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "chrono": "cpp"
     }
 }

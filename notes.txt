@@ -7,3 +7,5 @@ type of return value of the pipe:
 - all good - print the BUFFER_SIZE
 - notAllInDB - print the problem and gets the choice and than return it to the child
 - else problems - 
+
+change unzip funtion - make scripts executable

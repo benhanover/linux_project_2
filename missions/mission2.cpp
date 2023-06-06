@@ -5,24 +5,24 @@ void printFullAirportSchedule(string& IcoaCode, System& airports);
 int compare2Flights(FlightInfo* f1, FlightInfo* f2);
 
 
-void printAirportSchedule(System& airports)
+void printAirportSchedule(System& airports, vector<string> airportsNames)
 {
-    vector<string> airportsNames;
-    getInputFromUser(airportsNames, "Insert airports names to print the full airport schedule:");
     vector<string> missing_names;
-
     bool allInDB = false;
     int airportNamesSize = airportsNames.size();
     allInDB = airports.checkIfAllInDbAndUpdateMissing(missing_names, airportsNames);
 
-
-    if (!allInDB)
-         notAllInDB(missing_names, airports);
-    else
-         cout << "All in DB, printing as asked." << endl;
+   if (!allInDB) //This function will print the massages to the "childToParen" pipe and than the parent process will print it to the screen
+    {
+        cout << "Not all ICOA code names inserted exist in current database." << endl;
+        cout << "These names doesn't exist in the database:" << endl;
+        for (int i = 0; i < missing_names.size(); i++)
+            cout << missing_names[i] << ' ';
+        cout << endl;
+    }
 
     string curAirportName;
-     
+    
     for(int i = 0; i < airportNamesSize; i++)
     {
         curAirportName = airportsNames[i]; 
