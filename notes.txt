@@ -1,9 +1,3 @@
-take care of bad input.
+Graceful exit should be implemented by sending SIGUSR1 to child.
 
-
-in mission3 - if there are codes that don't exist, ask for new?
-
-type of return value of the pipe:
-- all good - print the BUFFER_SIZE
-- notAllInDB - print the problem and gets the choice and than return it to the child
-- else problems - 
+change CMakeLists - remove debug flag, make sure it works good

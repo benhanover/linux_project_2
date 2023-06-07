@@ -1,5 +1,9 @@
 #include "./missions.h"
 
+//Child process runs this function.
+//In "runChildProcess" function we redirected standard input to the read end of parent-to-child pipe,
+//so "cout" from this function prints the massage to the "childToParent" pipe,
+//then the parent process will read from the pipe and print it to the screen.
 
 
 void gracefulExit(System& airports)
@@ -15,11 +19,12 @@ void gracefulExit(System& airports)
         std::cout << "Failed to change directory.\n";
     }
 
-
     system("rm -r DB");
 
 
     if (chdir(buildPath.c_str()) != 0) {
         std::cout << "Failed to change directory.\n";
     }
+
+    airports.deleteAll(); //free all allocated memory
 }

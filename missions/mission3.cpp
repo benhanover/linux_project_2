@@ -1,5 +1,10 @@
 #include "./missions.h"
 
+//The child process runs these functions.
+//In "runChildProcess" function we redirected standard input to the read end of parent-to-child pipe,
+//so "cout" in these functions will print the massages to the "childToParent" pipe,
+//then the parent process will read from the pipe and print it to the screen.
+
 void printAllAircraftsFlights(System& airports)
 {
     vector<string> paths;
@@ -10,13 +15,16 @@ void printAllAircraftsFlights(System& airports)
     missing_names.reserve(20);
     int numOfCodes;
    
-    getInputFromUser(wantedCodes,"Please enter icao24 codes of aircrafts, in order to see their schedule.");
-
     bool allInDB = false;
     allInDB = checkIfAllAircraftsInDB(airports,missing_names,wantedCodes);
-    
     if (!allInDB)
-        cout << "Not all aircrafts in database. Printing only those that exist." << endl;
+    {
+        cout << "Not all ICOA code names inserted exist in current database." << endl; 
+        cout << "These names doesn't exist in the database:" << endl;
+        for (int i = 0; i < missing_names.size(); i++)
+            cout << missing_names[i] << ' ';
+        cout << endl;
+    }
     
     string curAircraft;
 
@@ -26,7 +34,7 @@ void printAllAircraftsFlights(System& airports)
        curAircraft = wantedCodes[i];
   
         if (find(missing_names.begin(), missing_names.end(), curAircraft) != missing_names.end())
-            continue;      
+            continue;      //if current aircraft is missing - continue to the next
        else 
         printSingleAircraftFlights(curAircraft,airports);
     }
@@ -51,8 +59,6 @@ bool checkIfAllAircraftsInDB(System& airports, vector<string>& missing_names, ve
         return false;
 
 }
-
-
 
 void printSingleAircraftFlights(string& icao24, System& airports)
 {

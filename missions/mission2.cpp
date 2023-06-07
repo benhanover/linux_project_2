@@ -1,33 +1,28 @@
 #include "./missions.h"
 
+//The child process runs these functions.
+//In "runChildProcess" function we redirected standard input to the read end of parent-to-child pipe,
+//so "cout" in these functions will print the massages to the "childToParent" pipe,
+//then the parent process will read from the pipe and print it to the screen.
 
-//string getNewNameFromDBorRerunScript(string missing_name, vector<string>& paths, System& airports);
-void printFullAirportSchedule(string& IcoaCode, System& airports);
-int compare2Flights(FlightInfo* f1, FlightInfo* f2);
-
-
-void printAirportSchedule(System& airports, vector<string> paths)
+void printAirportSchedule(System& airports, vector<string> airportsNames)
 {
-    vector<string> airportsNames;
-    getInputFromUser(airportsNames, "Insert airports names to print the full airport schedule:");
     vector<string> missing_names;
-
     bool allInDB = false;
     int airportNamesSize = airportsNames.size();
     allInDB = airports.checkIfAllInDbAndUpdateMissing(missing_names, airportsNames);
 
-
-    if (!allInDB)
+   if (!allInDB)
     {
         cout << "Not all ICOA code names inserted exist in current database." << endl;
-        cout << "Displaying data of airports that exist." << endl ;
+        cout << "These names doesn't exist in the database:" << endl;
+        for (int i = 0; i < missing_names.size(); i++)
+            cout << missing_names[i] << ' ';
+        cout << endl;
     }
-        // notAllInDB(missing_names, airports);
-    else
-         cout << "All in DB, printing as asked." << endl;
 
     string curAirportName;
-     
+    
     for(int i = 0; i < airportNamesSize; i++)
     {
         curAirportName = airportsNames[i]; 
@@ -83,34 +78,3 @@ int compare2Flights(FlightInfo* f1, FlightInfo* f2)
         return (stoi(f1->getFirstSeen()) < stoi(f2->getLastSeen())); //comparing departure(f1) and arrival(f2)
 }
 
-
-
-/* string getNewNameFromDBorRerunScript(string missing_name, vector<string>& paths,System& airports)
- {
-    int option;
-    string wantedName;
-    cout << "The first ICOA code name inserted (" << missing_name << ") doesn't exist in current database." << endl;
-    cout << "Please choose one of the following options:" << endl;
-    cout << "Press 1 to run script with this name to try download info to database." << endl;
-    cout << "Press 2 to choose code name that exist in the database." << endl;
-    cin >> option;
-
-    fs::path currentPath = fs::current_path();
-    string projectPath = currentPath;
-    string airportName = " " + missing_name;
-   
-    if (option == 1)        
-    {
-       system(((projectPath + "/flightScanner.sh ") += airportName).c_str());
-       return "";
-    }
-    else
-    {
-        cout << "This is a list of names that exist in the database:" << endl;
-        for (int i=0; i < paths.size(); i += 2)
-            cout << airports.getAirportNameFromPath(paths[i]) << "  ";
-        cout << endl << "Please choose only 1 name from this list." << endl;
-        cin >> wantedName;
-        return wantedName;
-    }
-}*/

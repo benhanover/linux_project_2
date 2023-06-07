@@ -5,15 +5,16 @@
 
 //--------------------------functions------------------------------
 void getInputFromUser(vector<string>& words, string message);
-void notAllInDB(vector<string>& missing_names, System& airports);
 
 //--------------------------mission 1------------------------------
 
 void printSingleAirportArv(System& airports,string& IcoaCode);
-void printAirportsArv(System& airports, vector<string> paths);
+void printAirportsArv(System& airports, vector<string> airportsCodeNames);
 //--------------------------mission 2------------------------------
 
-void printAirportSchedule(System& airports, vector<string> paths);
+void printAirportSchedule(System& airports, vector<string> airportsNames);
+void printFullAirportSchedule(string& IcoaCode, System& airports);
+int compare2Flights(FlightInfo* f1, FlightInfo* f2);
 
 //--------------------------mission 3------------------------------
 void printAllAircraftsFlights(System& airports);
@@ -21,12 +22,13 @@ bool checkIfAllAircraftsInDB(System& airports, vector<string>& missing_names, ve
 void printSingleAircraftFlights(string& icao24, System& airports);
 
 //--------------------------mission 4------------------------------
-void refreshDataBase(System& airports, vector<string>paths);
+void refreshDataBase(System& airports);
 
 //--------------------------mission 5------------------------------
 void zipDataBase(System& airports);
 
-
+//--------------------------mission 6------------------------------
+void printChildProcessPid();
 
 //--------------------------mission 7------------------------------
 void gracefulExit(System& airports);

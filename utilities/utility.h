@@ -59,11 +59,10 @@ public:
     void regenerate_db();
     bool isAircraftInDB(string code);
     bool isAirportExist(string airportName);
-    // void zipDirectory(const std::string& directoryPath, const std::string& zipFilePath);
 
-    void addFileToZip(zip_t *archive, const std::filesystem::path &filePath, const std::filesystem::path &baseDirectory);
+    void addFileToZip(zip_t *archive, const filesystem::path &filePath, const filesystem::path &baseDirectory);
 
-    void zipDirectory(const std::string &directoryPath, const std::string &zipFilePath);
+    void zipDirectory(const string &directoryPath, const string &zipFilePath);
 };
 
 

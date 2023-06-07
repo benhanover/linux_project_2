@@ -9,28 +9,14 @@ int main()
 
     unzipDB(DBZipPath, projectPath);
 
-    /* vector<string> paths;
-
-    paths.reserve(10);
-    airports.getAllPaths(paths);
-    airports.load_db(paths); */
-
     signal(SIGINT, handleSIGINT);
 
-    // choice = getChoice();
-    // while (true) 
-    // {
-    //     sendChoiceToParent(choice,airports, paths);
-    //     if (choice == 7)
-    //         break;
-    //     choice = getChoice();
-    // }
-    execute(airports/* , paths */);
+    execute(airports);
 
     return 1;
 }
 //---------------------------------functions------------------------------------
-void execute(System& airports /* , vector<string> paths */)
+void execute(System& airports)
 {
     int choice;
     int parentToChild[2];  // Pipe for parent to child communication
@@ -51,7 +37,7 @@ void execute(System& airports /* , vector<string> paths */)
 
     else if (pid == 0) // Child process
     {
-        runChildProcess(parentToChild, childToParent);
+        runChildProcess(parentToChild, childToParent, airports);
     }
 
     else // Parent process
@@ -61,87 +47,92 @@ void execute(System& airports /* , vector<string> paths */)
 }
 
 
-void runChildProcess(int* parentToChild,int* childToParent)
+void runChildProcess(int* parentToChild,int* childToParent, System& airports)
 {
     vector<string> paths;
-
     paths.reserve(10);
     airports.getAllPaths(paths);
-    airports.load_db(paths);
+    airports.load_db(paths); //loading data to child process
 
     close(parentToChild[WRITE_END]);  // Close unused write end of parent-to-child pipe
     close(childToParent[READ_END]);  // Close unused read end of child-to-parent pipe
 
-    //dup2(parentToChild[READ_END], STDIN_FILENO);    // Redirect standard input to the read end of parent-to-child pipe
-    //dup2(childToParent[WRITE_END], STDOUT_FILENO);   // Redirect standard output to the write end of child-to-parent pipe
-
-    //close(parentToChild[READ_END]);  // Close read end of parent-to-child pipe
-    //close(childToParent[WRITE_END]);  // Close write end of child-to-parent pipe
-    int choice;
+    dup2(parentToChild[READ_END], STDIN_FILENO);    // Redirect standard input to the read end of parent-to-child pipe
+    dup2(childToParent[WRITE_END], STDOUT_FILENO);   // Redirect standard output to the write end of child-to-parent pipe
+    
+    close(parentToChild[READ_END]);  // Close read end of parent-to-child pipe
+    close(childToParent[WRITE_END]);  // Close write end of child-to-parent pipe
+    int choice, vectorSize;
+    vector<string> codeNames;
     while (true) 
-    {   
-        vector<string> codesRecieved;
+    {
         ssize_t bytesRead = read(STDIN_FILENO, &choice, sizeof(choice));
         if (bytesRead <= 0) // End of data
-        break;
+            break;
         if(choice > 0 && choice < 4)
         {
-            // Read the output of the child process
-            //char buffer[BUFFER_SIZE];
-            //ssize_t bytesRead = read(STDIN_FILENO, buffer, BUFFER_SIZE - 1);
-            //cout << buffer << endl;
-            codesRecieved = readFromPipe(parentToChild[READ_END]);
-            //write(STDOUT_FILENO, buffer, sizeof(buffer));
-            //writeToPipe(STDOUT_FILENO, codesRecieved);
+            
+            bytesRead = read(STDIN_FILENO, &vectorSize, sizeof(vectorSize));
+            codeNames.clear();
+            codeNames.reserve(vectorSize);
+            char buffer[BUFFER_SIZE];
+            for (int i = 0; i < vectorSize; ++i)
+            {
+                bytesRead = read(STDIN_FILENO, buffer, sizeof(buffer));
+                if (bytesRead > 0)
+                {
+                    buffer[bytesRead] = '\0';
+                    codeNames.emplace_back(buffer);
+                }
+            }
         }
-        
+        getDataAndSendToParent(choice,airports,codeNames);
+   
+       
         if (choice == 7)
         {
             break; // End the loop if the user chooses option 7 to exit
         }
-        // Execute the choice in the child process
-        //executeChoice(choice, airports, paths);
-        //executeChoice(choice, airports, paths);
-        //write(STDOUT_FILENO, result.c_str(), result.length());
-        //string result = "Process child worked !\n";
-        //write(STDOUT_FILENO, result.c_str(), result.length());
     }
-    // Close the duplicated standard input and output
+    // // // Close the duplicated standard input and output
     close(STDIN_FILENO);   // Close standard input
     close(STDOUT_FILENO);  // Close standard output
+
 }
 
 void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
 {
         close(parentToChild[READ_END]);  // Close unused read end of parent-to-child pipe
         close(childToParent[WRITE_END]);  // Close unused write end of child-to-parent pipe
-        int choice;
-        vector<string> codeNames;
+        int choice, vectorSize;
         while (true) 
         {
+            vector<string> codeNames;
             choice = getChoice();
+            getInputForChoice(choice, codeNames);
             write(parentToChild[WRITE_END], &choice, sizeof(choice));
             if(choice > 0 && choice < 4)
             {
-                getInputForChoice(choice, codeNames);
-                //write(parentToChild[WRITE_END], &(codeNames[0]),codeNames[0].size());
-                 for (string& str : codeNames)
+                vectorSize = codeNames.size();
+                write(parentToChild[WRITE_END], &vectorSize, sizeof(vectorSize));
+                for (const auto& name : codeNames)
                 {
-                   size_t size = str.size();
-                     write(parentToChild[WRITE_END], &size, sizeof(size));           // Write the size of the string
-                    write(parentToChild[WRITE_END], str.c_str(), str.size());       // Write the string data
+                    write(parentToChild[WRITE_END], name.c_str(), name.size() + 1);  // Include null terminator
+                    usleep(10);
                 }
-                //writeToPipe(parentToChild[WRITE_END],codeNames);
             }
-
+            
             // Read the output of the child process
             char buffer[BUFFER_SIZE];
             ssize_t bytesRead = read(childToParent[0], buffer, BUFFER_SIZE - 1);
             if (bytesRead > 0) 
             {
-                buffer[bytesRead] = '\0';  //if there is any more things in the buffer it clean them.
+                buffer[bytesRead-1] = '\0';  //if there is any more things in the buffer it cleans them.
                 cout << "Output from child process:\n" << buffer << endl;
             }
+            memset(buffer, 0, sizeof(buffer));
+            if (choice == 7)
+                break;
         }
         close(parentToChild[WRITE_END]);
         close(childToParent[READ_END]);
@@ -184,7 +175,7 @@ int getChoice()
     printMenu();
     cin >> choice;
     cin.ignore(); // Ignore any leftover newline characters from previous input
-     /*
+    
     while(flag)
     {
         if(choice > '0' && choice < '8')
@@ -196,26 +187,26 @@ int getChoice()
             cin >> choice;
             cin.ignore(); // Ignore any leftover newline characters from previous input
         }
-    } */
+    }
     return choice;
 
 }
 
-void sendChoiceToParent(int choice,System& airports, vector<string> paths)
+void getDataAndSendToParent(int choice,System& airports, vector<string> codeNames)
 {
     switch(choice)
     {
-        case 1: printAirportsArv(airports, paths);
+        case 1: printAirportsArv(airports, codeNames);
         break;
-        case 2: printAirportSchedule(airports, paths);
+        case 2: printAirportSchedule(airports, codeNames);
         break;
-        case 3:printAllAircraftsFlights(airports);
+        case 3: printAllAircraftsFlights(airports);
         break;
-        case 4: refreshDataBase(airports, paths);
+        case 4: refreshDataBase(airports);
         break;
         case 5: zipDataBase(airports);
         break;
-        case 6:
+        case 6: printChildProcessPid();
         break;
         case 7: gracefulExit(airports);
         break;
@@ -235,7 +226,7 @@ void unzipDB(const string& zipFilePath, const string& destinationPath)
     filesystem::path absDestinationPath = filesystem::absolute(destinationPath);
 
     // Create the destination directory manually
-    std::filesystem::create_directory(absDestinationPath);
+    filesystem::create_directory(absDestinationPath);
 
 
     int numEntries = zip_get_num_entries(archive, ZIP_FL_UNCHANGED);
@@ -285,6 +276,7 @@ void unzipDB(const string& zipFilePath, const string& destinationPath)
         }
     }
 
+    //making the scripts executable
     string flightScannerScriptPath = destinationPath + "/flightScanner.sh";
     string command = "chmod +x " + flightScannerScriptPath;
     system(command.c_str());
@@ -303,38 +295,3 @@ void handleSIGINT(int signalNumber)
     gracefulExit(airports);
     exit(signalNumber);
 }
-
-
-/* void writeToPipe(int fd, vector<string>& data)
-{
-    for (string& str : data)
-    {
-        size_t size = str.size();
-        write(fd, &size, sizeof(size));           // Write the size of the string
-        write(fd, str.c_str(), str.size());       // Write the string data
-    }
-}
-
-vector<string> readFromPipe(int fd)
-{
-    vector<string> data;
-    while (true)
-    {
-        size_t size;
-        ssize_t bytesRead = read(fd, &size, sizeof(size));  // Read the size of the string
-        if (bytesRead <= 0)
-        {
-            break;  // End of pipe or error occurred
-        }
-
-        vector<char> buffer(size);
-        ssize_t stringBytesRead = read(fd, buffer.data(), size);  // Read the string data
-        if (stringBytesRead <= 0)
-        {
-            break;  // End of pipe or error occurred
-        }
-
-        data.emplace_back(buffer.data(), stringBytesRead);
-    }
-    return data;
-} */

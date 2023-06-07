@@ -1,33 +1,33 @@
 #include "./missions.h"
+ 
+ //The child process runs these functions.
+ //In "runChildProcess" function we redirected standard input to the read end of parent-to-child pipe,
+ //so "cout" in these functions will print the massages to the "childToParent" pipe,
+ //then the parent process will read from the pipe and print it to the screen.
 
-void printAirportsArv(System& airports, vector<string> paths)
+void printAirportsArv(System& airports, vector<string> airportsCodeNames)
 {
-    vector<string> airportsCodeNames;
-    getInputFromUser(airportsCodeNames, "Insert airports ICOA code names to print arrivals:");
-
     vector<string> missing_names;
-
     bool allInDB = false;
     int numOfCodes = airportsCodeNames.size();
     allInDB = airports.checkIfAllInDbAndUpdateMissing(missing_names, airportsCodeNames);
     
     if (!allInDB)
     {
-        cout << "Not all ICOA code names inserted exist in current database." << endl;
-        cout << "Displaying data of airports that exist." << endl ;
+        cout << "Not all ICOA code names inserted exist in current database." << endl; 
+        cout << "These names doesn't exist in the database:" << endl;
+        for (int i = 0; i < missing_names.size(); i++)
+            cout << missing_names[i] << ' ';
+        cout << endl;
     }
-        // notAllInDB(missing_names, airports);
-    else
-         cout << "All in DB. Printing as asked." << endl;
-    
-    
+       
     string curAirportName;
-    
     for(int i = 0; i < numOfCodes; i++)
     {
-         curAirportName = airportsCodeNames[i]; 
-         printSingleAirportArv(airports,curAirportName);
+        curAirportName = airportsCodeNames[i]; 
+        printSingleAirportArv(airports, curAirportName);
     }
+ 
 }
 
 

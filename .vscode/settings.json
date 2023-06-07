@@ -2,7 +2,12 @@
     "files.associations": {
         "iostream": "cpp",
         "ratio": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "string_view": "cpp",
+        "random": "cpp",
+        "iosfwd": "cpp",
+        "*.tcc": "cpp",
+        "chrono": "cpp"
     },
     "cmake.configureOnOpen": false
 }
