@@ -13,24 +13,13 @@ https://github.com/benhanover/linux_project1/blob/main/README.md
 
 
 ## **How to run this project**
-### **Step one**: add executable permissions to the scripts<br>
- Run: <pre>chmod u+x flightScanner.sh clean.sh</pre><br>
+### **Step one**: Build the project<br>
+ Run: <pre>chmod u+x build_project.sh</pre><br>
+<pre>./build_project.sh</pre><br>
 ### **Step two**: load the data base<br>
+<pre>cd ./DB</pre><br>
 Run: <pre>./flightScanner.sh (airports icao names)</pre><br>
 **Example:** <pre>./flightScanner.sh EGGW EGLL LLBG EGKK</pre><br>
-### **Step three**: compile the project<br>
-Run:<pre>make</pre><br>
-### **Step four**: test the project according to each program<br>
-### Q1:<br>
-Run <pre> ./arrivals.out (airport icao names)</pre><br>
-**Example:** <pre>./arrivals.out EGGW EGLL LLBG EGKK</pre><br>
-### Q2:<br>
-Run <pre> ./full_schedule.out (airport icao name)</pre><br>
-**Example:** <pre>./full_schedule.out EGGW</pre><br>
-### Q3:<br>
-Run <pre> ./airplane.out (aircraft icao24 names)</pre><br>
-**Example:** <pre>./airplane.out 4c808e 73806a</pre><br>
-### Q4:<br>
-Run <pre>./updateDB.out</pre><br>
-### **Step five**: clean all the ".o/.out/so" files :<br>
-Run <pre>make clean</pre>
+### **Step three** Test the project:<br>
+Run:<pre>cd ../build</pre><br>
+Run:<pre>./runMe</pre><br>
