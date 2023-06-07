@@ -3,7 +3,6 @@
 
 
 //take sentence from user for example "this is a senetence" break it down into array of words that combine the sentence - "this", "is" "a" "sentence"
-//*********  handle no input or wrong code names *********
 void getInputFromUser(vector<string>& words, string message)
 {
     cout << message << endl;

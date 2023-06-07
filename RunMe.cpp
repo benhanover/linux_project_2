@@ -1,6 +1,7 @@
 #include "./RunMe.h"
 
 System airports;
+
 int main()
 {
     int choice;
@@ -8,11 +9,6 @@ int main()
     string DBZipPath = fs::current_path().parent_path()/"DB.zip";
 
     unzipDB(DBZipPath, projectPath);
-
-    /* vector<string> paths;
-    paths.reserve(10);
-    airports.getAllPaths(paths);
-    airports.load_db(paths); */
 
     signal(SIGINT, handleSIGINT);
 
@@ -84,7 +80,6 @@ void runChildProcess(int* parentToChild,int* childToParent, System& airports)
             break;
         if(choice > 0 && choice < 4)
         {
-            
             bytesRead = read(STDIN_FILENO, &vectorSize, sizeof(vectorSize));
             codeNames.clear();
             codeNames.reserve(vectorSize);
@@ -97,66 +92,57 @@ void runChildProcess(int* parentToChild,int* childToParent, System& airports)
                     buffer[bytesRead] = '\0';
                     codeNames.emplace_back(buffer);
                 }
-            }
-
-            bool allGood = true;
-            
+                memset(buffer, 0, sizeof(buffer));
+            }            
             getDataAndSendToParent(choice,airports, codeNames);
         }
         else
         {
-
-        }
-
-        if (choice == 7)
-        {
-            break; // End the loop if the user chooses option 7 to exit
+            getDataAndSendToParent(choice,airports, codeNames);
         }
     }
-    // // // Close the duplicated standard input and output
     close(STDIN_FILENO);   // Close standard input
     close(STDOUT_FILENO);  // Close standard output
-
 }
 
 void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
 {
-        close(parentToChild[READ_END]);  // Close unused read end of parent-to-child pipe
-        close(childToParent[WRITE_END]);  // Close unused write end of child-to-parent pipe
-        int choice, vectorSize;
-        while (true) 
+    close(parentToChild[READ_END]);  // Close unused read end of parent-to-child pipe
+    close(childToParent[WRITE_END]);  // Close unused write end of child-to-parent pipe
+    int choice, vectorSize;
+    while (true) 
+    {
+        vector<string> codeNames;
+        choice = getChoice();
+        getInputForChoice(choice, codeNames);
+        write(parentToChild[WRITE_END], &choice, sizeof(choice));
+        if(choice > 0 && choice < 4)
         {
-            vector<string> codeNames;
-            choice = getChoice();
-            getInputForChoice(choice, codeNames);
-            write(parentToChild[WRITE_END], &choice, sizeof(choice));
-            if(choice > 0 && choice < 4)
+            vectorSize = codeNames.size();
+            write(parentToChild[WRITE_END], &vectorSize, sizeof(vectorSize));
+            for (const auto& name : codeNames)
             {
-                vectorSize = codeNames.size();
-                write(parentToChild[WRITE_END], &vectorSize, sizeof(vectorSize));
-                for (const auto& name : codeNames)
-                {
-                    write(parentToChild[WRITE_END], name.c_str(), name.size() + 1);  // Include null terminator
-                    usleep(10);
-                }
+                write(parentToChild[WRITE_END], name.c_str(), name.size() + 1);  // Include null terminator
+                usleep(10);
             }
-
-            // Read the output of the child process
-            char buffer[BUFFER_SIZE];
-            ssize_t bytesRead = read(childToParent[0], buffer, BUFFER_SIZE - 1);
-            if (bytesRead > 0) 
-            {
-                buffer[bytesRead-1] = '\0';  //if there is any more things in the buffer it clean them.
-                cout << "Output from child process:\n" << buffer << endl;
-            }
-            memset(buffer, 0, sizeof(buffer));
         }
-        close(parentToChild[WRITE_END]);
-        close(childToParent[READ_END]);
+        
+        // Read the output of the child process
+        char buffer[BUFFER_SIZE];
+        ssize_t bytesRead = read(childToParent[0], buffer, BUFFER_SIZE - 1);
+        if (bytesRead > 0) 
+        {
+            buffer[bytesRead-1] = '\0';  //if there is any more things in the buffer it clean them.
+            cout << "Output from child process:\n" << buffer << endl;
+        }
+        memset(buffer, 0, sizeof(buffer));
+    }
+    close(parentToChild[WRITE_END]);
+    close(childToParent[READ_END]);
 
-        // Wait for the child process to exit
-        int status;
-        waitpid(pid, &status, 0);
+    // Wait for the child process to exit
+    int status;
+    waitpid(pid, &status, 0);
 }
 
 void getInputForChoice(int choice, vector<string>& codeNames)
@@ -211,7 +197,7 @@ int getChoice()
             cout << "Invalid choice, please choose again!" << endl;
             printMenu();
             cin >> choice;
-            cin.ignore(); // Ignore any leftover newline characters from previous input
+            cin.ignore(); 
         }
     }
     return choice;
@@ -239,7 +225,6 @@ void getDataAndSendToParent(int choice,System& airports, vector<string> codeName
     }
 }
 
-
 void unzipDB(const string& zipFilePath, const string& destinationPath)
 {
     zip_t *archive = zip_open(zipFilePath.c_str(), ZIP_RDONLY, nullptr);
@@ -253,7 +238,6 @@ void unzipDB(const string& zipFilePath, const string& destinationPath)
 
     // Create the destination directory manually
     std::filesystem::create_directory(absDestinationPath);
-
 
     int numEntries = zip_get_num_entries(archive, ZIP_FL_UNCHANGED);
     for (int i = 0; i < numEntries; ++i)
