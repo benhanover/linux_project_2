@@ -1,7 +1,7 @@
 #include "./missions.h"
 
 //function for parent process
-void getInputFromUser(vector<string>& words, string message)
+/* void getInputFromUser(vector<string>& words, string message)
 {
     cout << message << endl;
     string line;
@@ -12,4 +12,4 @@ void getInputFromUser(vector<string>& words, string message)
     while (iss >> code)
         words.push_back(code);
 }
-
+ */
