@@ -12,14 +12,6 @@ int main()
 
     signal(SIGINT, handleSIGINT);
 
-    // choice = getChoice();
-    // while (true) 
-    // {
-    //     sendChoiceToParent(choice,airports, paths);
-    //     if (choice == 7)
-    //         break;
-    //     choice = getChoice();
-    // }
     execute(airports);
 
     return 1;
@@ -37,7 +29,7 @@ void execute(System& airports)
     }
 
     pid_t pid = fork();
-
+    pid_t childPID;
     if (pid == -1)
     {
         cout << "Error forking process" << endl;
@@ -47,11 +39,12 @@ void execute(System& airports)
     else if (pid == 0) // Child process
     {
         runChildProcess(parentToChild, childToParent, airports);
+        childPID = getpid();
     }
 
     else // Parent process
     {
-        runParentProcess(parentToChild, childToParent, pid);
+        runParentProcess(parentToChild, childToParent, pid, childPID);
     }
 }
 
@@ -78,12 +71,14 @@ void runChildProcess(int* parentToChild,int* childToParent, System& airports)
         ssize_t bytesRead = read(STDIN_FILENO, &choice, sizeof(choice));
         if (bytesRead <= 0) // End of data
             break;
+
         if(choice > 0 && choice < 4)
         {
             bytesRead = read(STDIN_FILENO, &vectorSize, sizeof(vectorSize));
             codeNames.clear();
             codeNames.reserve(vectorSize);
-            char buffer[BUFFER_SIZE];
+
+            char buffer[MAX_NAME_LEN];
             for (int i = 0; i < vectorSize; ++i)
             {
                 bytesRead = read(STDIN_FILENO, buffer, sizeof(buffer));
@@ -100,22 +95,26 @@ void runChildProcess(int* parentToChild,int* childToParent, System& airports)
         {
             getDataAndSendToParent(choice,airports, codeNames);
         }
+        fflush(stdout);  // Flush the output to ensure it's sent to the parent process
     }
     close(STDIN_FILENO);   // Close standard input
     close(STDOUT_FILENO);  // Close standard output
 }
 
-void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
+void runParentProcess(int* parentToChild,int* childToParent, pid_t pid, pid_t childPID)
 {
     close(parentToChild[READ_END]);  // Close unused read end of parent-to-child pipe
     close(childToParent[WRITE_END]);  // Close unused write end of child-to-parent pipe
     int choice, vectorSize;
+
     while (true) 
     {
         vector<string> codeNames;
         choice = getChoice();
         getInputForChoice(choice, codeNames);
+
         write(parentToChild[WRITE_END], &choice, sizeof(choice));
+
         if(choice > 0 && choice < 4)
         {
             vectorSize = codeNames.size();
@@ -126,8 +125,9 @@ void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
                 usleep(10);
             }
         }
-        
-        // Read the output of the child process
+        else if(choice == 6)
+            cout << childPID <<endl;
+        //Read the output of the child process
         char buffer[BUFFER_SIZE];
         ssize_t bytesRead = read(childToParent[0], buffer, BUFFER_SIZE - 1);
         if (bytesRead > 0) 
@@ -135,7 +135,6 @@ void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
             buffer[bytesRead-1] = '\0';  //if there is any more things in the buffer it clean them.
             cout << "Output from child process:\n" << buffer << endl;
         }
-        memset(buffer, 0, sizeof(buffer));
     }
     close(parentToChild[WRITE_END]);
     close(childToParent[READ_END]);
@@ -212,7 +211,7 @@ void getDataAndSendToParent(int choice,System& airports, vector<string> codeName
         break;
         case 2: printAirportSchedule(airports, codeNames);
         break;
-        case 3: printAllAircraftsFlights(airports);
+        case 3: printAllAircraftsFlights(airports, codeNames);
         break;
         case 4: refreshDataBase(airports);
         break;

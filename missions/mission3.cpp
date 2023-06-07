@@ -1,20 +1,15 @@
 #include "./missions.h"
 
-void printAllAircraftsFlights(System& airports)
+void printAllAircraftsFlights(System& airports, vector<string> aircraftsNames)
 {
-    vector<string> paths;
-    paths.reserve(10);
-    vector<string> wantedCodes;
-    wantedCodes.reserve(20);
     vector<string> missing_names;
-    missing_names.reserve(20);
-    int numOfCodes;
-   
     bool allInDB = false;
-    allInDB = checkIfAllAircraftsInDB(airports,missing_names,wantedCodes);
-    if (!allInDB) //This function will print the massages to the "childToParent" pipe and than the parent process will print it to the screen
+    int aircraftsNamesSize = aircraftsNames.size();
+    allInDB = checkIfAllAircraftsInDB(airports, missing_names, aircraftsNames);
+
+   if (!allInDB) //This function will print the massages to the "childToParen" pipe and than the parent process will print it to the screen
     {
-        cout << "Not all ICOA code names inserted exist in current database." << endl; 
+        cout << "Not all ICOA code names inserted exist in current database." << endl;
         cout << "These names doesn't exist in the database:" << endl;
         for (int i = 0; i < missing_names.size(); i++)
             cout << missing_names[i] << ' ';
@@ -22,18 +17,15 @@ void printAllAircraftsFlights(System& airports)
     }
     
     string curAircraft;
-
-    numOfCodes = wantedCodes.size();
-    for(int i = 0; i < numOfCodes; i++)
+    for(int i = 0; i < aircraftsNamesSize; i++)
     {
-       curAircraft = wantedCodes[i];
+       curAircraft = aircraftsNames[i];
   
         if (find(missing_names.begin(), missing_names.end(), curAircraft) != missing_names.end())
             continue;      
        else 
         printSingleAircraftFlights(curAircraft,airports);
     }
-
 }
 
 bool checkIfAllAircraftsInDB(System& airports, vector<string>& missing_names, vector<string> codesRecievedVec)

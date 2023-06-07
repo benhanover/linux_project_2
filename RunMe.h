@@ -4,13 +4,11 @@
 #include <unistd.h>
 #define READ_END 0
 #define WRITE_END 1
-char StdOut[4096] = {0};
-char StdErr[4096] = {0};
-const int BUFFER_SIZE = 1000000;
-const int MAX_NAME_LENGTH = 5;
+#define BUFFER_SIZE 1000000
+#define MAX_NAME_LEN 10
 
 void runChildProcess(int* parentToChild,int* childToParent, System& airports);
-void runParentProcess(int* parentToChild,int* childToParent, pid_t pid);
+void runParentProcess(int* parentToChild,int* childToParent, pid_t pid, pid_t childPID);
 void handleSIGINT(int signalNumber);
 void printMenu();
 void execute(System& airports);

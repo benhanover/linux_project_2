@@ -7,15 +7,15 @@ void printAirportsArv(System& airports, vector<string> airportsCodeNames)
     int numOfCodes = airportsCodeNames.size();
     allInDB = airports.checkIfAllInDbAndUpdateMissing(missing_names, airportsCodeNames);
     
-    if (!allInDB) //This function will print the massages to the "childToParent" pipe and than the parent process will print it to the screen
+   if (!allInDB) //This function will print the massages to the "childToParen" pipe and than the parent process will print it to the screen
     {
-        cout << "Not all ICOA code names inserted exist in current database." << endl; 
+        cout << "Not all ICOA code names inserted exist in current database." << endl;
         cout << "These names doesn't exist in the database:" << endl;
         for (int i = 0; i < missing_names.size(); i++)
             cout << missing_names[i] << ' ';
         cout << endl;
     }
-       
+
     string curAirportName;
     for(int i = 0; i < numOfCodes; i++)
     {

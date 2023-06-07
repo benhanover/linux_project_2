@@ -7,6 +7,8 @@
         "random": "cpp",
         "iosfwd": "cpp",
         "*.tcc": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "cstdlib": "cpp",
+        "fstream": "cpp"
     }
 }
