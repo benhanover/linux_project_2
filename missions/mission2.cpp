@@ -1,24 +1,27 @@
 #include "./missions.h"
 
 
-void printFullAirportSchedule(string& IcoaCode, System& airports);
+string printFullAirportSchedule(string& IcoaCode, System& airports);
 int compare2Flights(FlightInfo* f1, FlightInfo* f2);
 
 
-void printAirportSchedule(System& airports, vector<string> airportsNames)
+string printAirportSchedule(System& airports, vector<string> airportsNames)
 {
     vector<string> missing_names;
+    string res;
     bool allInDB = false;
     int airportNamesSize = airportsNames.size();
     allInDB = airports.checkIfAllInDbAndUpdateMissing(missing_names, airportsNames);
 
    if (!allInDB) //This function will print the massages to the "childToParen" pipe and than the parent process will print it to the screen
     {
-        cout << "Not all ICOA code names inserted exist in current database." << endl;
-        cout << "These names doesn't exist in the database:" << endl;
+        res =  "Not all ICOA code names inserted exist in current database.\n";
+        res += "These names doesn't exist in the database:\n";
         for (int i = 0; i < missing_names.size(); i++)
-            cout << missing_names[i] << ' ';
-        cout << endl;
+            {
+                res += missing_names[i] + ' ';
+            }
+        res += '\n';
     }
 
     string curAirportName;
@@ -26,13 +29,17 @@ void printAirportSchedule(System& airports, vector<string> airportsNames)
     for(int i = 0; i < airportNamesSize; i++)
     {
         curAirportName = airportsNames[i]; 
-        printFullAirportSchedule(curAirportName,airports);
+        res += "Printing schedule for " + curAirportName + ":\n";
+        res += printFullAirportSchedule(curAirportName,airports);
+        res += "\n";
     }
+    return res;
 }
 
-void printFullAirportSchedule(string& IcoaCode, System& airports)
+string printFullAirportSchedule(string& IcoaCode, System& airports)
 {
     bool exist = airports.isAirportExist(IcoaCode);
+    string res;
 
     if (exist)
     {
@@ -49,15 +56,15 @@ void printFullAirportSchedule(string& IcoaCode, System& airports)
             combine.push_back(flightInfo);
 
         sort(combine.begin(), combine.end(), compare2Flights);
-
         for (auto& flightInfo: combine)
         {
             if (flightInfo->getArvOrDpt() == 'a') 
-                cout << "Flight #" << flightInfo->getCallsign() << " arriving from " << flightInfo->getEstDepartureAirport() << " at " << flightInfo->getLastSeen() << endl;
+                res += "Flight #" + flightInfo->getCallsign() + " arriving from " + flightInfo->getEstDepartureAirport() + " at " + flightInfo->getLastSeen() + "\n";
             else
-                cout << "Flight #" << flightInfo->getCallsign() << " departing to " << flightInfo->getEstDepartureAirport() << " at " << flightInfo->getFirstSeen() << endl;
+                res += "Flight #" + flightInfo->getCallsign() + " departing to " + flightInfo->getEstDepartureAirport() + " at " + flightInfo->getFirstSeen() + "\n";
         }
     }
+    return res;
 }
 
 int compare2Flights(FlightInfo* f1, FlightInfo* f2)

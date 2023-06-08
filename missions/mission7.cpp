@@ -12,14 +12,14 @@ void gracefulExit(System& airports)
     string s_buildPath = buildPath;
 
     if (chdir(s_projectPath.c_str()) != 0) {
-        std::cout << "Failed to change directory.\n";
+        cout << "Failed to change directory.\n";
     }
 
     system("rm -r DB");
 
 
     if (chdir(buildPath.c_str()) != 0) {
-        std::cout << "Failed to change directory.\n";
+        cout << "Failed to change directory.\n";
     }
 
     airports.deleteAll(); //free all allocated memory

@@ -1,19 +1,22 @@
 #include "./missions.h"
 
-void printAllAircraftsFlights(System& airports, vector<string> aircraftsNames)
+string printAllAircraftsFlights(System& airports, vector<string> aircraftsNames)
 {
     vector<string> missing_names;
+    string res;
     bool allInDB = false;
     int aircraftsNamesSize = aircraftsNames.size();
     allInDB = checkIfAllAircraftsInDB(airports, missing_names, aircraftsNames);
 
    if (!allInDB) //This function will print the massages to the "childToParen" pipe and than the parent process will print it to the screen
     {
-        cout << "Not all ICOA code names inserted exist in current database." << endl;
-        cout << "These names doesn't exist in the database:" << endl;
+        res =  "Not all ICOA code names inserted exist in current database.\n";
+        res += "These names doesn't exist in the database:\n";
         for (int i = 0; i < missing_names.size(); i++)
-            cout << missing_names[i] << ' ';
-        cout << endl;
+            {
+                res += missing_names[i] + ' ';
+            }
+        res += '\n';
     }
     
     string curAircraft;
@@ -24,8 +27,9 @@ void printAllAircraftsFlights(System& airports, vector<string> aircraftsNames)
         if (find(missing_names.begin(), missing_names.end(), curAircraft) != missing_names.end())
             continue;      
        else 
-        printSingleAircraftFlights(curAircraft,airports);
+        res += printSingleAircraftFlights(curAircraft,airports);
     }
+    return res;
 }
 
 bool checkIfAllAircraftsInDB(System& airports, vector<string>& missing_names, vector<string> codesRecievedVec)
@@ -44,15 +48,14 @@ bool checkIfAllAircraftsInDB(System& airports, vector<string>& missing_names, ve
         return true; //no missing names, all arguments in DB
     else 
         return false;
-
 }
 
-void printSingleAircraftFlights(string& icao24, System& airports)
+string printSingleAircraftFlights(string& icao24, System& airports)
 {
-    string aircraftName;
+    string aircraftName, res;
     vector<SingleAirport*> airportsVector = airports.getAirportsVector();
 
-    cout << "Printing schedule for " << icao24 << ":" << endl;
+    res += "Printing schedule for " + icao24 + ":\n";
 
     for(auto& airport: airportsVector)
     {
@@ -60,18 +63,19 @@ void printSingleAircraftFlights(string& icao24, System& airports)
         {
             if(flightInfo->getAircraftName() == icao24)
             {
-                cout << icao24 << " departed from  " << flightInfo->getEstDepartureAirport() << " at " << flightInfo->getFirstSeen() <<  " arrived in " 
-                  << flightInfo->getEstArrivalAirport() << " at " <<flightInfo->getLastSeen() << endl;
+                res += icao24 + " departed from  " + flightInfo->getEstDepartureAirport() + " at " + flightInfo->getFirstSeen() +  " arrived in " 
+                  + flightInfo->getEstArrivalAirport() + " at " + flightInfo->getLastSeen() + "\n";
             }
         }
         for (auto& flightInfo: airport->getDepartures())
         {
             if(flightInfo->getAircraftName() == icao24)
             {
-                cout << flightInfo->getAircraftName() << " departed from  " << flightInfo->getEstDepartureAirport() << " at " << flightInfo->getFirstSeen() <<  " arrived in " 
-                    << flightInfo->getEstArrivalAirport() << " at " <<flightInfo->getLastSeen() << endl;
+                res += flightInfo->getAircraftName() + " departed from  " + flightInfo->getEstDepartureAirport() + " at " + flightInfo->getFirstSeen() +  " arrived in " 
+                    + flightInfo->getEstArrivalAirport() + " at " + flightInfo->getLastSeen() + "\n";
             }
         }
     }
-    cout << endl;
+    res += "\n";
+    return res;
 }

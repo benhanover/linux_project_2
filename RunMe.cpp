@@ -47,9 +47,58 @@ void execute(System& airports)
         runParentProcess(parentToChild, childToParent, pid, childPID);
     }
 }
-
-
 void runChildProcess(int* parentToChild,int* childToParent, System& airports)
+{
+    vector<string> paths;
+    paths.reserve(10);
+    airports.getAllPaths(paths);
+    airports.load_db(paths);
+
+    close(parentToChild[WRITE_END]);  // Close unused write end of parent-to-child pipe
+    close(childToParent[READ_END]);  // Close unused read end of child-to-parent pipe
+
+    int choice, vectorSize;
+    vector<string> codeNames;
+    string res;
+    while (true) 
+    {
+        ssize_t bytesRead = read(parentToChild[READ_END], &choice, sizeof(choice));
+        if (bytesRead <= 0) // End of data
+            break;
+
+        if(choice > 0 && choice < 4)
+        {
+            bytesRead = read(parentToChild[READ_END], &vectorSize, sizeof(vectorSize));
+            codeNames.clear();
+            codeNames.reserve(vectorSize);
+
+            char buffer[MAX_NAME_LEN];
+            for (int i = 0; i < vectorSize; ++i)
+            {
+                bytesRead = read(parentToChild[READ_END], buffer, sizeof(buffer));
+                if (bytesRead > 0)
+                {
+                    buffer[bytesRead] = '\0';
+                    codeNames.emplace_back(buffer);
+                }
+                memset(buffer, 0, sizeof(buffer));
+            }            
+            res = getDataAndSendToParent(choice,airports, codeNames);
+        }
+        else
+        {
+            getDataAndSendToParent(choice,airports, codeNames);
+        }
+        int resSize = res.size() + 1;
+        write(childToParent[WRITE_END], &resSize, sizeof(resSize));
+        write(childToParent[WRITE_END], res.c_str(), resSize);
+        fflush(stdout);  // Flush the output to ensure it's sent to the parent process
+    }
+    close(parentToChild[READ_END]);
+    close(childToParent[WRITE_END]);
+}
+
+/*void runChildProcess(int* parentToChild,int* childToParent, System& airports)
 {
     vector<string> paths;
     paths.reserve(10);
@@ -99,7 +148,7 @@ void runChildProcess(int* parentToChild,int* childToParent, System& airports)
     }
     close(STDIN_FILENO);   // Close standard input
     close(STDOUT_FILENO);  // Close standard output
-}
+}*/
 
 void runParentProcess(int* parentToChild,int* childToParent, pid_t pid, pid_t childPID)
 {
@@ -124,17 +173,23 @@ void runParentProcess(int* parentToChild,int* childToParent, pid_t pid, pid_t ch
                 write(parentToChild[WRITE_END], name.c_str(), name.size() + 1);  // Include null terminator
                 usleep(10);
             }
+
+            //Read the output of the child process
+            char buffer[4096];
+            int resSize;
+            read(childToParent[READ_END], &resSize, sizeof(resSize));
+            while(resSize > 0)
+            {
+                ssize_t byteRead = read(childToParent[READ_END], buffer, 256);
+                if(byteRead > 0)
+                    buffer[byteRead-1] = '\0';
+                cout << buffer; 
+                resSize -= byteRead;
+                memset(buffer, 0, 4096);   
+            }
         }
         else if(choice == 6)
             cout << childPID <<endl;
-        //Read the output of the child process
-        char buffer[BUFFER_SIZE];
-        ssize_t bytesRead = read(childToParent[0], buffer, BUFFER_SIZE - 1);
-        if (bytesRead > 0) 
-        {
-            buffer[bytesRead-1] = '\0';  //if there is any more things in the buffer it clean them.
-            cout << "Output from child process:\n" << buffer << endl;
-        }
     }
     close(parentToChild[WRITE_END]);
     close(childToParent[READ_END]);
@@ -203,25 +258,27 @@ int getChoice()
 
 }
 
-void getDataAndSendToParent(int choice,System& airports, vector<string> codeNames)
+string getDataAndSendToParent(int choice,System& airports, vector<string> codeNames)
 {
+    string reasult;
     switch(choice)
     {
-        case 1: printAirportsArv(airports, codeNames);
+        case 1: reasult = printAirportsArv(airports, codeNames);
         break;
-        case 2: printAirportSchedule(airports, codeNames);
+        case 2: reasult = printAirportSchedule(airports, codeNames);
         break;
-        case 3: printAllAircraftsFlights(airports, codeNames);
+        case 3: reasult = printAllAircraftsFlights(airports, codeNames);
         break;
         case 4: refreshDataBase(airports);
         break;
         case 5: zipDataBase(airports);
         break;
-        case 6:
+        case 6:break;
         break;
         case 7: gracefulExit(airports);
         break;
     }
+    return reasult;
 }
 
 void unzipDB(const string& zipFilePath, const string& destinationPath)

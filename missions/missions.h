@@ -7,16 +7,16 @@
 void getInputFromUser(vector<string>& words, string message);
 
 //--------------------------mission 1------------------------------
-void printSingleAirportArv(System& airports,string& IcoaCode);
-void printAirportsArv(System& airports, vector<string> airportsCodeNames);
+string printSingleAirportArv(System& airports,string& IcoaCode);
+string printAirportsArv(System& airports, vector<string> airportsCodeNames);
 
 //--------------------------mission 2------------------------------
-void printAirportSchedule(System& airports, vector<string> airportsNames);
+string printAirportSchedule(System& airports, vector<string> airportsNames);
 
 //--------------------------mission 3------------------------------
-void printAllAircraftsFlights(System& airports, vector<string> aircraftsNames);
+string printAllAircraftsFlights(System& airports, vector<string> aircraftsNames);
+string printSingleAircraftFlights(string& icao24, System& airports);
 bool checkIfAllAircraftsInDB(System& airports, vector<string>& missing_names, vector<string> codesRecievedVec);
-void printSingleAircraftFlights(string& icao24, System& airports);
 
 //--------------------------mission 4------------------------------
 void refreshDataBase(System& airports);

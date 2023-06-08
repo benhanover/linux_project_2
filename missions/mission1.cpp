@@ -1,46 +1,56 @@
 #include "./missions.h"
 
-void printAirportsArv(System& airports, vector<string> airportsCodeNames)
+string printAirportsArv(System& airports, vector<string> airportsCodeNames)
 {
     vector<string> missing_names;
+    string res;
     bool allInDB = false;
     int numOfCodes = airportsCodeNames.size();
     allInDB = airports.checkIfAllInDbAndUpdateMissing(missing_names, airportsCodeNames);
     
    if (!allInDB) //This function will print the massages to the "childToParen" pipe and than the parent process will print it to the screen
     {
-        cout << "Not all ICOA code names inserted exist in current database." << endl;
-        cout << "These names doesn't exist in the database:" << endl;
+        res =  "Not all ICOA code names inserted exist in current database.\n";
+        res += "These names doesn't exist in the database:\n";
         for (int i = 0; i < missing_names.size(); i++)
-            cout << missing_names[i] << ' ';
-        cout << endl;
+            {
+                res += missing_names[i] + ' ';
+            }
+        res += '\n';
     }
 
     string curAirportName;
     for(int i = 0; i < numOfCodes; i++)
     {
         curAirportName = airportsCodeNames[i]; 
-        printSingleAirportArv(airports, curAirportName);
+        res += printSingleAirportArv(airports, curAirportName);
+        res += "\n";
     }
- 
+    return res;
 }
 
 
-void printSingleAirportArv(System& airports,string& IcoaCode)
+string printSingleAirportArv(System& airports,string& IcoaCode)
 {
     bool exist = airports.isAirportExist(IcoaCode);
+    string res;
 
     if (exist)
     {
         int airportIndex = airports.getAirportIndexByName(IcoaCode);
         vector<SingleAirport*> airportsVector = airports.getAirportsVector();
-        cout << "Printing schedule for " << IcoaCode << ":" << endl;
+        res = "Printing incoming flights for " + IcoaCode + ":\n";
+
         for (auto& flightInfo: airportsVector[airportIndex]->getArivals())
         {
-            cout << "Flight #" << flightInfo->getCallsign() << " arriving from " << flightInfo->getEstDepartureAirport() << ", tookoff at " << flightInfo->getFirstSeen() <<  " landed at " << flightInfo->getLastSeen() << endl;
+            if(!flightInfo->getCallsign().empty())
+                {
+                    res += "Flight #" + flightInfo->getCallsign() + " arriving from " + flightInfo->getEstDepartureAirport() +
+                   ", tookoff at " + flightInfo->getFirstSeen() +  " landed at " + flightInfo->getLastSeen() + "\n";
+                }
         }
-        cout << "\n\n";
     }
+    return res;
 }
 
 
