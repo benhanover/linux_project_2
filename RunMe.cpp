@@ -1,6 +1,7 @@
 #include "./RunMe.h"
 
 System airports;
+pid_t pid; 
 
 int main()
 {
@@ -29,7 +30,7 @@ void execute(System& airports)
         return;
     }
 
-    pid_t pid = fork();
+    pid = fork();
     pid_t childPID;
     if (pid == -1)
     {
@@ -158,20 +159,11 @@ void getInputForChoice(int choice, vector<string>& codeNames)
 {
     switch(choice)
     {
-        case 1: 
-        {
-            getInputFromUser(codeNames, "Insert airports ICOA code names to print arrivals:");
-        }
+        case 1: getInputFromUser(codeNames, "Insert airports ICOA code names to print arrivals:");
         break;
-        case 2: 
-        {
-            getInputFromUser(codeNames, "Insert airports names to print the full airport schedule:");
-        }
+        case 2: getInputFromUser(codeNames, "Insert airports names to print the full airport schedule:");
         break;
-        case 3:
-        {
-            getInputFromUser(codeNames,"Please enter icao24 codes of aircrafts, in order to see their schedule.");
-        }
+        case 3: getInputFromUser(codeNames,"Please enter icao24 codes of aircrafts, in order to see their schedule.");
         break;
     }
 }
@@ -215,14 +207,14 @@ int getChoice()
 
 string getDataAndSendToParent(int choice,System& airports, vector<string> codeNames)
 {
-    string reasult;
+    string result;
     switch(choice)
     {
-        case 1: reasult = printAirportsArv(airports, codeNames);
+        case 1: result = printAirportsArv(airports, codeNames);
         break;
-        case 2: reasult = printAirportSchedule(airports, codeNames);
+        case 2: result = printAirportSchedule(airports, codeNames);
         break;
-        case 3: reasult = printAllAircraftsFlights(airports, codeNames);
+        case 3: result = printAllAircraftsFlights(airports, codeNames);
         break;
         case 4: refreshDataBase(airports);
         break;
@@ -231,7 +223,7 @@ string getDataAndSendToParent(int choice,System& airports, vector<string> codeNa
         case 7: gracefulExit(airports);
         break;
     }
-    return reasult;
+    return result;
 }
 
 void unzipDB(const string& zipFilePath, const string& destinationPath)
@@ -311,7 +303,10 @@ void unzipDB(const string& zipFilePath, const string& destinationPath)
 
 void handleSIGINT(int signalNumber)
 {
-    cout << "You sent SIGINT signal.. exiting gracefully :)" << endl;
-    gracefulExit(airports);
-    exit(signalNumber);
+    if (pid > 0)
+    {
+        cout << "You sent SIGINT signal.. exiting gracefully :)" << endl;
+        gracefulExit(airports);
+        exit(signalNumber);
+    }
 }

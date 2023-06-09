@@ -10,5 +10,6 @@
         "chrono": "cpp",
         "cstdlib": "cpp",
         "fstream": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }

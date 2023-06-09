@@ -13,9 +13,7 @@ string printAirportsArv(System& airports, vector<string> airportsCodeNames)
         res =  "Not all ICOA code names inserted exist in current database.\n";
         res += "These names doesn't exist in the database:\n";
         for (int i = 0; i < missing_names.size(); i++)
-            {
-                res += missing_names[i] + ' ';
-            }
+            res += missing_names[i] + ' ';
         res += '\n';
     }
 
