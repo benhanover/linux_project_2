@@ -4,7 +4,8 @@
 #include <unistd.h>
 #define READ_END 0
 #define WRITE_END 1
-#define BUFFER_SIZE 1000000
+#define BUFFER_SIZE 4096
+#define SIZE_TO_READ 256
 #define MAX_NAME_LEN 10
 
 void runChildProcess(int* parentToChild,int* childToParent, System& airports);

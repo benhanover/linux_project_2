@@ -8,7 +8,7 @@ string printAllAircraftsFlights(System& airports, vector<string> aircraftsNames)
     int aircraftsNamesSize = aircraftsNames.size();
     allInDB = checkIfAllAircraftsInDB(airports, missing_names, aircraftsNames);
 
-   if (!allInDB) //This function will print the massages to the "childToParen" pipe and than the parent process will print it to the screen
+   if (!allInDB)
     {
         res =  "Not all ICOA code names inserted exist in current database.\n";
         res += "These names doesn't exist in the database:\n";

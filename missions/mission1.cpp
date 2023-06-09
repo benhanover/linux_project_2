@@ -8,7 +8,7 @@ string printAirportsArv(System& airports, vector<string> airportsCodeNames)
     int numOfCodes = airportsCodeNames.size();
     allInDB = airports.checkIfAllInDbAndUpdateMissing(missing_names, airportsCodeNames);
     
-   if (!allInDB) //This function will print the massages to the "childToParen" pipe and than the parent process will print it to the screen
+   if (!allInDB) 
     {
         res =  "Not all ICOA code names inserted exist in current database.\n";
         res += "These names doesn't exist in the database:\n";
@@ -28,7 +28,6 @@ string printAirportsArv(System& airports, vector<string> airportsCodeNames)
     }
     return res;
 }
-
 
 string printSingleAirportArv(System& airports,string& IcoaCode)
 {

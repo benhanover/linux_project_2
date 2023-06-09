@@ -11,14 +11,15 @@ void gracefulExit(System& airports)
     string s_projectPath = projectPath;
     string s_buildPath = buildPath;
 
-    if (chdir(s_projectPath.c_str()) != 0) {
+    if (chdir(s_projectPath.c_str()) != 0) 
+    {
         cout << "Failed to change directory.\n";
     }
 
     system("rm -r DB");
 
-
-    if (chdir(buildPath.c_str()) != 0) {
+    if (chdir(buildPath.c_str()) != 0) 
+    {
         cout << "Failed to change directory.\n";
     }
 

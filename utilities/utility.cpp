@@ -38,7 +38,7 @@ void System::regenerate_db()
     string s_buildPath = buildPath;
 
     if (chdir(s_DB_path.c_str()) != 0) {
-        std::cout << "Failed to change directory.\n";
+        cout << "Failed to change directory.\n";
     }
     string clean = "./clean.sh "; 
     string flightScanner = "./flightScanner.sh ";
@@ -105,9 +105,6 @@ vector<FlightInfo*> System::getFlightsByCallsign(string& callsign)
         }
     }
     return flightsByCallsign;
-
-   ///////////////********what if callsign doesn't exist? error message? ********
-
 }
 
 //--------------------------------------Helpers functions-----------------------------------------

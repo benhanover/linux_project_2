@@ -12,6 +12,8 @@ string printAirportsArv(System& airports, vector<string> airportsCodeNames);
 
 //--------------------------mission 2------------------------------
 string printAirportSchedule(System& airports, vector<string> airportsNames);
+string printFullAirportSchedule(string& IcoaCode, System& airports);
+int compare2Flights(FlightInfo* f1, FlightInfo* f2);
 
 //--------------------------mission 3------------------------------
 string printAllAircraftsFlights(System& airports, vector<string> aircraftsNames);
