@@ -104,7 +104,7 @@ void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
         while (true) 
         {
             int choice, vectorSize;
-            vector<string> codeNames;
+            /* vector<string> codeNames;
             choice = getChoice();
             getInputForChoice(choice, codeNames);
             if (choice != 6 && choice != 7)
@@ -119,7 +119,7 @@ void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
                     write(parentToChild[WRITE_END], &nameSize, sizeof(nameSize));  // Include null terminator
                     write(parentToChild[WRITE_END], name.c_str(), nameSize);  // Include null terminator
                 }
-            }
+            } */
             
             if (choice == 6)
             {
@@ -133,24 +133,6 @@ void runParentProcess(int* parentToChild,int* childToParent, pid_t pid)
                 break;
             }
             
-            // Read output of child process
-            string buffer;
-            char c;
-            bool gotMoreData = true;
-            while (gotMoreData)
-            {
-                ssize_t bytesRead = read(childToParent[0], &c, sizeof(c));
-                if (c == '^') 
-                    gotMoreData = false;
-                else buffer += c;
-                
-                if (buffer.size() == 100)
-                {
-                    cout << buffer;
-                    buffer = "";
-                }
-            }
-            cout << buffer << endl;
         }
         close(parentToChild[WRITE_END]);
         close(childToParent[READ_END]);
@@ -173,17 +155,7 @@ void getInputForChoice(int choice, vector<string>& codeNames)
     }
 }
 
-void getInputFromUser(vector<string>& words, string message)
-{
-    cout << message << endl;
-    string line;
-    getline(cin, line);
 
-    istringstream iss(line);
-    string code;
-    while (iss >> code)
-        words.push_back(code);
-}
 
 void printMenu()
 {
@@ -317,7 +289,7 @@ void unzipDB(const string& zipFilePath, const string& destinationPath)
 
 void handleSIGINT(int signalNumber)
 {
-    cout << "You sent SIGINT signal.. exiting gracefully :)" << endl;
+    cout << "You sent SIGINT signal... exiting gracefully :)" << endl;
     gracefulExit(airports);
     exit(signalNumber);
 }
