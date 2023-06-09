@@ -8,6 +8,8 @@
 #include <filesystem>
 #include <algorithm>
 #include <unistd.h>
+#include <zip.h>
+#include <sys/stat.h>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -41,22 +43,20 @@ public:
         airportsVector.clear();
     }
     vector<SingleAirport *> getAirportsVector() const { return airportsVector; }
-    void getAllAirportsNames(vector<string> &airportNames);
     vector<FlightInfo *> getFlightsByCallsign(string &callsign);
-    int getAirportIndexByName(string& airportName);
-    static string getPathType(string &path);
-    void getAllPaths(vector<string> &paths);
     string getAirportNameFromPath(string &path);
-
+    void getAllAirportsNames(vector<string> &airportNames);
+    void getAllPaths(vector<string> &paths);
+    void addFileToZip(zip_t *archive, const std::filesystem::path &filePath, const std::filesystem::path &baseDirectory);
+    void zipDirectory(const std::string &directoryPath, const std::string &zipFilePath);
     void load_db(vector<string> &paths);
-
-    bool checkIfAllInDB(vector<string> &paths, vector<string> &missing_names, int numOfCodesRecieved, vector<string> codesRecievedArr);
-
-    bool checkIfAllInDbAndUpdateMissing(vector<string> &missing_names, vector<string> codesRecievedArr);
-    
     void regenerate_db();
+    bool checkIfAllInDB(vector<string> &paths, vector<string> &missing_names, int numOfCodesRecieved, vector<string> codesRecievedArr);
+    bool checkIfAllInDbAndUpdateMissing(vector<string> &missing_names, vector<string> codesRecievedArr);
     bool isAircraftInDB(string code);
     bool isAirportExist(string airportName);
+    int getAirportIndexByName(string& airportName);
+    static string getPathType(string &path);
 };
 
 
@@ -105,10 +105,10 @@ public:
 class FlightInfo : public SingleAirport
 {
     char arvOrDpt;
-    string icao24;
     int firstSeen;
-    string estDepartureAirport;
-    int lastSeen;              
+    int lastSeen;   
+    string icao24; 
+    string estDepartureAirport;          
     string estArrivalAirport;  
     string callsign;           
 
@@ -125,9 +125,9 @@ public:
         callsign = _callsign;
     }
     char getArvOrDpt() const {return arvOrDpt; }
+    FlightInfo* getCurrentFlightInfo(char* currentLine, string& pathType);
     string getIcao24() const {return icao24; }
     string getCallsign()const { return callsign; }
-    FlightInfo* getCurrentFlightInfo(char* currentLine, string& pathType);
     string getEstArrivalAirport() const {return estArrivalAirport;}
     string getEstDepartureAirport() const {return estDepartureAirport;}
     string getFirstSeen() const { return to_string(firstSeen); }
@@ -141,3 +141,7 @@ public:
             airport.departures.push_back(this);
     }
 };
+
+
+
+

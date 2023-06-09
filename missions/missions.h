@@ -1,25 +1,30 @@
 #pragma once
 #include "../utilities/utility.h"
 #include <sstream>
-
+#include <sys/wait.h>
 
 //--------------------------functions------------------------------
 void getInputFromUser(vector<string>& words, string message);
-void notAllInDB(vector<string>& missing_names, System& airports);
 
 //--------------------------mission 1------------------------------
+string printSingleAirportArv(System& airports,string& IcoaCode);
+string printAirportsArv(System& airports, vector<string> airportsCodeNames);
 
-void printSingleAirportArv(System& airports,string& IcoaCode);
-void printAirportsArv(System& airports, vector<string> paths);
 //--------------------------mission 2------------------------------
-
-void printAirportSchedule(System& airports, vector<string> paths);
+string printAirportSchedule(System& airports, vector<string> airportsNames);
+string printFullAirportSchedule(string& IcoaCode, System& airports);
+int compare2Flights(FlightInfo* f1, FlightInfo* f2);
 
 //--------------------------mission 3------------------------------
-//mission 3
-void printAllAircraftsFlights(System& airports);
+string printAllAircraftsFlights(System& airports, vector<string> aircraftsNames);
+string printSingleAircraftFlights(string& icao24, System& airports);
 bool checkIfAllAircraftsInDB(System& airports, vector<string>& missing_names, vector<string> codesRecievedVec);
-void printSingleAircraftFlights(string& icao24, System& airports);
 
 //--------------------------mission 4------------------------------
-void refreshDataBase(System& airports, vector<string>paths);
+void refreshDataBase(System& airports);
+
+//--------------------------mission 5------------------------------
+void zipDataBase(System& airports);
+
+//--------------------------mission 7------------------------------
+void gracefulExit(System& airports);

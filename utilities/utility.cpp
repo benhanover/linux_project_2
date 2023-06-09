@@ -4,15 +4,6 @@
 
 //----------------------------------------Main Functions-----------------------------------------
 
-// void System::deleteAll()
-// {
-//     for (auto& airport : airportsVector)
-//     {
-//         delete airport;
-//     }
-//     airportsVector.clear();
-// }
-
 int System::getAirportIndexByName(string& airportName)
 {
     while(true)
@@ -40,20 +31,27 @@ void System::regenerate_db()
         airportNames += name += " ";
 
     fs::path buildPath = fs::current_path();
-    fs::path projectPath = fs::current_path().parent_path();
+    fs::path DB_path = fs::current_path().parent_path()/"DB";
 
-    string s_projectPath = projectPath;
+    
+    string s_DB_path = DB_path;
     string s_buildPath = buildPath;
 
-    if (chdir(projectPath.c_str()) != 0) {
-        std::cout << "Failed to change directory.\n";
+    if (chdir(s_DB_path.c_str()) != 0) {
+        cout << "Failed to change directory.\n";
     }
+    string clean = "./clean.sh "; 
+    string flightScanner = "./flightScanner.sh ";
+
+    system("chmod u+x clean.sh");
+    system("chmod u+x flightScanner.sh");
 
     //delete previous DB
-    system(((s_projectPath + "/clean.sh ") += airportNames).c_str());
+    system((clean += airportNames).c_str());
     deleteAll();
     //create data base
-    system(((s_projectPath + "/flightScanner.sh ") += airportNames).c_str());
+    system((flightScanner += airportNames).c_str());
+
     
     if (chdir(buildPath.c_str()) != 0) {
         std::cout << "Failed to change directory.\n";
@@ -107,9 +105,6 @@ vector<FlightInfo*> System::getFlightsByCallsign(string& callsign)
         }
     }
     return flightsByCallsign;
-
-   ///////////////********what if callsign doesn't exist? error message? ********
-
 }
 
 //--------------------------------------Helpers functions-----------------------------------------
@@ -272,4 +267,55 @@ bool System::isAirportExist(string airportName)
         if (airport->getIcaoCode() == airportName)
             return true;
     return false;
+}
+
+
+void System::zipDirectory(const std::string& directoryPath, const std::string& zipFilePath)
+{
+    zip_t* archive = zip_open(zipFilePath.c_str(), ZIP_CREATE | ZIP_TRUNCATE, nullptr);
+    if (archive == nullptr)
+    {
+        std::cerr << "Failed to open the ZIP file: " << zip_strerror(archive) << std::endl;
+        return;
+    }
+
+    std::filesystem::path basePath(directoryPath);
+    addFileToZip(archive, basePath, basePath);
+
+    if (zip_close(archive) != 0)
+    {
+        std::cerr << "Failed to close the ZIP archive: " << zip_strerror(archive) << std::endl;
+        return;
+    }
+
+    std::cout << "Successfully zipped the directory." << std::endl;
+}
+
+void System::addFileToZip(zip_t* archive, const std::filesystem::path& filePath, const std::filesystem::path& baseDirectory)
+{
+    std::filesystem::path relativePath = filePath.lexically_relative(baseDirectory);
+
+    if (std::filesystem::is_directory(filePath))
+    {
+        zip_dir_add(archive, relativePath.string().c_str(), ZIP_FL_ENC_GUESS);
+
+        for (const auto& entry : std::filesystem::directory_iterator(filePath))
+        {
+            addFileToZip(archive, entry.path(), baseDirectory);
+        }
+    }
+    else
+    {
+        // std::string fileName = filePath.filename().string();
+        // if (fileName != "clean.sh" && fileName != "flightScanner.sh")
+        zip_source_t *source = zip_source_file(archive, filePath.string().c_str(), 0, 0);
+        if (source == nullptr)
+        {
+            std::cerr << "Failed to open the file: " << filePath << std::endl;
+            return;
+        }
+
+        zip_file_add(archive, relativePath.string().c_str(), source, ZIP_FL_ENC_GUESS);
+        zip_source_keep(source);
+    }
 }
