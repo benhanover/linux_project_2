@@ -40,6 +40,7 @@ void execute(System& airports)
 
     else if (pid == 0) // Child process
     {
+        signal(SIGUSR1, handleSIGUSR1);
         runChildProcess(parentToChild, childToParent, airports);
         childPID = getpid();
     }
@@ -108,7 +109,8 @@ void runParentProcess(int* parentToChild,int* childToParent, pid_t pid, pid_t ch
         choice = getChoice();
         getInputForChoice(choice, codeNames);
 
-        write(parentToChild[WRITE_END], &choice, sizeof(choice));
+        if (choice != 6 && choice != 7)
+            write(parentToChild[WRITE_END], &choice, sizeof(choice));
         usleep(10);
 
         if(choice > 0 && choice < 4)
@@ -136,14 +138,16 @@ void runParentProcess(int* parentToChild,int* childToParent, pid_t pid, pid_t ch
         }
         
         else if(choice == 5) //flush the pipe
-            {
-                char buffer[1];
-                read(childToParent[READ_END], buffer, sizeof(buffer));
-            }
+        {
+            char buffer[1];
+            read(childToParent[READ_END], buffer, sizeof(buffer));
+        }
         else if(choice == 6)
             cout << "The child process ID is: " << childPID <<endl;
+        
         else if(choice == 7)
         {
+            int killRes = kill(pid, SIGUSR1);
             break;
         }
     }
@@ -219,8 +223,6 @@ string getDataAndSendToParent(int choice,System& airports, vector<string> codeNa
         case 4: refreshDataBase(airports);
         break;
         case 5: zipDataBase(airports);
-        break;
-        case 7: gracefulExit(airports);
         break;
     }
     return result;
@@ -305,8 +307,14 @@ void handleSIGINT(int signalNumber)
 {
     if (pid > 0)
     {
-        cout << "You sent SIGINT signal.. exiting gracefully :)" << endl;
-        gracefulExit(airports);
+        cout << "You sent SIGINT signal... exiting gracefully :)" << endl;
+        int killRes = kill(pid, SIGUSR1);
         exit(signalNumber);
     }
+}
+
+void handleSIGUSR1(int signalNumber)
+{
+    cout << "from child received SIGUSR1" << endl;
+    gracefulExit(airports);
 }
